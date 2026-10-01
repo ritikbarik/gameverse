@@ -30,8 +30,8 @@ export default function LoginScreen({ onLoginSuccess, onBackToLanding }) {
       title: 'Customer Portal',
       role: 'Customer',
       tag: 'Gamer & Visitor Access',
-      tagColor: '#2563EB',
-      tagBg: '#EFF6FF',
+      tagColor: '#E50914',
+      tagBg: 'rgba(229, 9, 20, 0.12)',
       icon: Gamepad2,
       desc: 'Browse real-time station availability, reserve PC/Console/VR setups, order café snacks and gaming gear, and track live session bills.',
       features: ['Station Availability', 'Reservations', 'Café & Gear Orders', 'Itemized Bills'],
@@ -48,8 +48,8 @@ export default function LoginScreen({ onLoginSuccess, onBackToLanding }) {
       title: 'Café Staff & Receptionist',
       role: 'Staff',
       tag: 'Merged Operations Desk',
-      tagColor: '#1D4ED8',
-      tagBg: '#EFF6FF',
+      tagColor: '#E50914',
+      tagBg: 'rgba(229, 9, 20, 0.12)',
       icon: Users,
       desc: 'Merged operations for front desk and café floor: customer check-ins, reservations, active session tracking, food orders, and billing.',
       features: ['Front Desk Check-in', 'Start/End Sessions', 'Café Orders', 'Payment Processing', 'Stock Alerts'],
@@ -66,8 +66,8 @@ export default function LoginScreen({ onLoginSuccess, onBackToLanding }) {
       title: 'Administrator Portal',
       role: 'Administrator',
       tag: 'Full System Control',
-      tagColor: '#2563EB',
-      tagBg: '#EFF6FF',
+      tagColor: '#E50914',
+      tagBg: 'rgba(229, 9, 20, 0.12)',
       icon: ShieldCheck,
       desc: 'Complete system oversight: configure gaming stations & pricing, manage employee credentials, maintain inventory, and generate business reports.',
       features: ['Station Config', 'Staff & User Mgmt', 'Master Inventory', 'Revenue & Usage Reports'],
@@ -137,9 +137,9 @@ export default function LoginScreen({ onLoginSuccess, onBackToLanding }) {
                 alignItems: 'center',
                 gap: '0.45rem',
                 fontWeight: 700,
-                color: 'var(--blue-primary)',
-                borderColor: 'var(--blue-border)',
-                background: 'var(--blue-light)'
+                color: '#FFFFFF',
+                borderColor: 'rgba(255, 255, 255, 0.15)',
+                background: 'rgba(255, 255, 255, 0.05)'
               }}
             >
               <ArrowLeft size={15} />
@@ -157,8 +157,8 @@ export default function LoginScreen({ onLoginSuccess, onBackToLanding }) {
             width: 60,
             height: 60,
             borderRadius: '18px',
-            background: '#2563EB',
-            boxShadow: '0 8px 24px rgba(37, 99, 235, 0.25)',
+            background: '#E50914',
+            boxShadow: '0 8px 24px rgba(229, 9, 20, 0.4)',
             marginBottom: '1rem'
           }}>
             <Gamepad2 size={32} color="#ffffff" />
@@ -179,7 +179,7 @@ export default function LoginScreen({ onLoginSuccess, onBackToLanding }) {
             borderRadius: 'var(--radius-full)',
             border: '1px solid var(--border-subtle)',
             fontSize: '0.75rem',
-            color: '#2563EB',
+            color: '#E50914',
             fontWeight: 700,
             marginTop: '0.75rem',
             boxShadow: 'var(--shadow-sm)'
