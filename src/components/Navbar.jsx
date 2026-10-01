@@ -1,0 +1,100 @@
+import React from 'react';
+import { useApp } from '../context/AppContext';
+import { User, LogOut } from 'lucide-react';
+
+export default function Navbar({ onLogout }) {
+  const { currentUser } = useApp();
+
+  if (!currentUser) return null;
+
+  const isCustomer = currentUser.role === 'Customer';
+  const isStaff = currentUser.role === 'Staff' || currentUser.role === 'Receptionist' || currentUser.role === 'Café Staff';
+
+  const portalTitle = isCustomer
+    ? 'CUSTOMER PORTAL'
+    : isStaff
+    ? 'STAFF OPERATIONS PORTAL'
+    : 'ADMINISTRATOR PORTAL';
+
+  const portalBadgeColor = isCustomer
+    ? { bg: '#FFF5F5', border: '#FFCDD2', text: '#C62828' }
+    : isStaff
+    ? { bg: '#FDECEC', border: '#EF9A9A', text: '#B71C1C' }
+    : { bg: '#FFF5F5', border: '#E57373', text: '#C62828' };
+
+  return (
+    <header className="top-header" style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: '0.85rem 2rem',
+      backgroundColor: 'var(--bg-header)',
+      borderBottom: '1px solid var(--border-subtle)',
+      boxShadow: 'var(--shadow-sm)'
+    }}>
+      {/* Left: Portal Identity */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '0.45rem',
+          padding: '0.35rem 0.85rem',
+          borderRadius: 'var(--radius-full)',
+          backgroundColor: portalBadgeColor.bg,
+          border: `1px solid ${portalBadgeColor.border}`,
+          fontSize: '0.75rem',
+          fontWeight: 800,
+          color: portalBadgeColor.text,
+          letterSpacing: '0.05em'
+        }}>
+          <span>{portalTitle}</span>
+        </div>
+      </div>
+
+      {/* Right: User Profile & Logout */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+          <div
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: '50%',
+              backgroundColor: '#FDECEC',
+              border: '1px solid #FFCDD2',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#C62828'
+            }}
+          >
+            <User size={16} />
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--text-main)' }}>
+              {currentUser.name}
+            </div>
+            <div style={{ fontSize: '0.6875rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
+              {currentUser.role} • {currentUser.user_id}
+            </div>
+          </div>
+        </div>
+
+        <button
+          className="btn btn-secondary btn-sm"
+          onClick={onLogout}
+          style={{
+            borderColor: '#FFCDD2',
+            color: '#C62828',
+            background: '#FFF5F5',
+            fontWeight: 700
+          }}
+          title="Sign out of GameVerse"
+        >
+          <LogOut size={14} />
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </header>
+  );
+}
