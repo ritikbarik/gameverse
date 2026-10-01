@@ -45,6 +45,7 @@ try {
 const PRESET_SESSION_IDS = ['SES-501', 'SES-502', 'SES-499'];
 const PRESET_ORDER_IDS = ['ORD-301', 'ORD-302', 'ORD-299'];
 const PRESET_BILL_IDS = ['BIL-701'];
+const PRESET_RESERVATION_IDS = ['RES-101', 'RES-102', 'RES-103'];
 
 export function AppProvider({ children }) {
   const [users, setUsers] = useState(() => loadStorage('users', INITIAL_USERS));
@@ -82,13 +83,9 @@ export function AppProvider({ children }) {
   });
   const [reservations, setReservations] = useState(() => {
     const loaded = loadStorage('reservations', INITIAL_RESERVATIONS);
-    if (!Array.isArray(loaded)) return INITIAL_RESERVATIONS;
-    return loaded.map(r => {
-      if (['RES-101', 'RES-102'].includes(r.reservation_id) && r.status === 'Active') {
-        return { ...r, status: 'Confirmed' };
-      }
-      return r;
-    });
+    return Array.isArray(loaded)
+      ? loaded.filter(r => !PRESET_RESERVATION_IDS.includes(r.reservation_id))
+      : [];
   });
   const [inventory, setInventory] = useState(() => loadStorage('inventory', INITIAL_INVENTORY));
 
@@ -729,6 +726,12 @@ export function AppProvider({ children }) {
     notify('Inventory item updated.', 'success');
   };
 
+  const deleteInventoryItem = (itemId) => {
+    setInventory(prev => prev.filter(item => item.item_id !== itemId));
+    notify(`Inventory item ${itemId} removed.`, 'info');
+    return true;
+  };
+
   // Reset to default demo data
   const resetToDemo = () => {
     setUsers(INITIAL_USERS);
@@ -773,6 +776,7 @@ export function AppProvider({ children }) {
         updateStock,
         addInventoryItem,
         updateInventoryItem,
+        deleteInventoryItem,
         resetToDemo
       }}
     >

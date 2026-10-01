@@ -12,6 +12,7 @@ import {
   Clock,
   Sparkles,
   Zap,
+  Package,
   Layers,
   ChevronRight
 } from 'lucide-react';
@@ -20,6 +21,7 @@ export default function LandingPage({ onLogin }) {
   const [activeNav, setActiveNav] = useState('home');
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [scrollY, setScrollY] = useState(0);
 
   // Detect prefers-reduced-motion
   useEffect(() => {
@@ -30,7 +32,7 @@ export default function LandingPage({ onLogin }) {
     return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
-  // Subtle mouse movement for parallax (only if reduced motion is disabled)
+  // Smooth mouse movement for parallax & 3D tilt
   useEffect(() => {
     if (prefersReducedMotion) return;
     const handleMouseMove = (e) => {
@@ -43,9 +45,11 @@ export default function LandingPage({ onLogin }) {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [prefersReducedMotion]);
 
-  // Track active section on scroll (Only home, roles, about)
+  // Track scroll position for dynamic scroll parallax
   useEffect(() => {
     const handleScroll = () => {
+      setScrollY(window.scrollY);
+
       const sections = ['home', 'roles', 'about'];
       const scrollPos = window.scrollY + 140;
 
@@ -70,11 +74,12 @@ export default function LandingPage({ onLogin }) {
 
   const pX = prefersReducedMotion ? 0 : mousePos.x;
   const pY = prefersReducedMotion ? 0 : mousePos.y;
+  const sY = prefersReducedMotion ? 0 : scrollY;
 
   return (
     <div className="landing-page-root">
       {/* =========================================================================
-          1. STICKY NAVBAR (Clean, Minimal, Modern)
+          1. STICKY NAVBAR (Professional Blue & White Frosted Glass)
           ========================================================================= */}
       <header className="landing-navbar-sticky">
         <div className="landing-navbar-container">
@@ -89,11 +94,11 @@ export default function LandingPage({ onLogin }) {
             </div>
             <div>
               <div className="landing-brand-name">GameVerse</div>
-              <div className="landing-brand-tagline">Unified Gaming Café Platform</div>
+              <div className="landing-brand-tagline">Centralized Gaming Platform</div>
             </div>
           </div>
 
-          {/* Center Navigation Links (Features & How-It-Works Removed) */}
+          {/* Center Navigation Links */}
           <nav className="landing-nav-menu">
             <button
               onClick={() => scrollToSection('home')}
@@ -127,7 +132,7 @@ export default function LandingPage({ onLogin }) {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.45rem',
-                boxShadow: '0 4px 14px rgba(198, 40, 40, 0.25)'
+                boxShadow: '0 4px 14px rgba(37, 99, 235, 0.28)'
               }}
             >
               <span>Launch Portal</span>
@@ -138,40 +143,45 @@ export default function LandingPage({ onLogin }) {
       </header>
 
       {/* =========================================================================
-          2. HERO SECTION (Elevated, State-Of-The-Art Aesthetics)
+          2. OPTIMIZED HERO SECTION: GAMING CONSOLE & CHILLED COKE CAN SHOWCASE
           ========================================================================= */}
-      <section id="home" className="landing-section hero-section-wrapper">
-        {/* Subtle Ambient Parallax Gradient Blobs */}
+      <section id="home" className="hero-section-wrapper">
+        {/* Ambient Parallax Gradient Background Shapes */}
         <div
           className="hero-bg-shapes"
           style={{
-            transform: `translate3d(${pX * -12}px, ${pY * -10}px, 0)`
+            transform: `translate3d(${pX * -12}px, ${pY * -10 + sY * -0.08}px, 0)`
           }}
         >
           <div className="subtle-shape shape-circle-1" />
           <div className="subtle-shape shape-circle-2" />
+          <div className="hero-glow-beam" />
         </div>
 
         <div className="hero-content-container">
-          {/* Left Column: Headlines & Call to Actions */}
-          <div className="hero-text-col">
+          {/* Left Column: Typography, Value Proposition & Actions */}
+          <div
+            className="hero-text-col"
+            style={{
+              transform: `translate3d(0, ${sY * 0.04}px, 0)`
+            }}
+          >
             <div className="hero-kicker-pill">
               <span className="hero-kicker-dot" />
               <span>UNIFIED ARCHITECTURE • MERGED OPERATIONS</span>
             </div>
 
             <h1 className="hero-main-title">
-              Elevate Your
+              Next-Gen Gaming.
               <br />
-              Gaming Café.
+              Chilled Refreshments.
               <br />
-              <span className="hero-title-accent">Front Desk & Café, Merged.</span>
+              <span className="hero-title-accent">One Unified Platform.</span>
             </h1>
 
             <p className="hero-description">
-              Eliminate disjointed logs and paper receipts. GameVerse consolidates station reservations,
-              real-time gaming timers, in-seat food orders, inventory tracking, and single-click itemized
-              invoicing into one unified operations system.
+              Power your gaming café with instant console & PC rig allocation, in-seat café orders
+              featuring ice-cold Coke & snacks, live hardware session timers, and automated single-ticket checkout.
             </p>
 
             <div style={{ display: 'flex', gap: '0.85rem', flexWrap: 'wrap', marginBottom: '1.75rem' }}>
@@ -179,139 +189,134 @@ export default function LandingPage({ onLogin }) {
                 className="btn btn-primary"
                 onClick={onLogin}
                 style={{
-                  padding: '0.75rem 1.6rem',
+                  padding: '0.8rem 1.75rem',
                   fontSize: '0.95rem',
                   fontWeight: 700,
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '0.5rem',
-                  boxShadow: '0 8px 22px rgba(198, 40, 40, 0.28)'
+                  gap: '0.55rem',
+                  boxShadow: '0 8px 22px rgba(37, 99, 235, 0.28)'
                 }}
               >
                 <span>Enter System Portal</span>
-                <ArrowRight size={16} />
+                <ArrowRight size={17} />
               </button>
 
               <button
                 className="btn btn-secondary"
                 onClick={() => scrollToSection('roles')}
                 style={{
-                  padding: '0.75rem 1.4rem',
+                  padding: '0.8rem 1.5rem',
                   fontSize: '0.95rem',
                   fontWeight: 700,
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '0.5rem'
+                  gap: '0.55rem'
                 }}
               >
                 <span>Explore Unified Roles</span>
-                <ChevronDown size={16} color="#C62828" />
+                <ChevronDown size={17} color="var(--blue-primary)" />
               </button>
             </div>
 
+            {/* Feature Highlight Chips */}
             <div className="hero-highlight-chips">
               <div className="hero-chip">
-                <CheckCircle2 size={15} color="#C62828" />
-                <span>Café Staff & Receptionist Merged</span>
+                <Gamepad2 size={16} color="var(--blue-primary)" />
+                <span>Next-Gen Console & PC Rigs</span>
               </div>
               <div className="hero-chip">
-                <CheckCircle2 size={15} color="#C62828" />
-                <span>Live Hardware Timers</span>
+                <Coffee size={16} color="var(--blue-primary)" />
+                <span>In-Seat Coke & Food Delivery</span>
               </div>
               <div className="hero-chip">
-                <CheckCircle2 size={15} color="#C62828" />
+                <Users size={16} color="var(--blue-primary)" />
+                <span>Front Desk & Café Floor Merged</span>
+              </div>
+              <div className="hero-chip">
+                <Receipt size={16} color="var(--blue-primary)" />
                 <span>Consolidated Itemized Billing</span>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Hero Visual Composition (Live Merged Operations Preview) */}
+          {/* Right Column: High-Fidelity Gaming Console & Coke Can 3D Stage */}
           <div className="hero-visual-col">
             <div
-              className="hero-composition"
+              className="hero-stage-container"
               style={{
-                transform: `translate3d(${pX * 8}px, ${pY * 6}px, 0)`
+                transform: `perspective(1000px) rotateY(${pX * 4}deg) rotateX(${-pY * 4}deg) translate3d(0, ${sY * -0.05}px, 0)`
               }}
             >
-              {/* Primary Showcase Card: Active Station S-03 with Merged Operations */}
-              <div className="hero-station-card">
-                <div className="hero-station-header">
+              {/* Backlight Ambient Glow Ring */}
+              <div className="stage-ambient-glow" />
+
+              {/* Master Showcase Card with Console & Coke Can Image */}
+              <div className="stage-image-card">
+                <img
+                  src="/hero-gaming-coke.jpg"
+                  alt="GameVerse Next-Gen Gaming Console and Chilled Coca-Cola Setup"
+                  className="stage-visual-img"
+                  loading="eager"
+                />
+
+                {/* Glass Light Sheen Overlay */}
+                <div
+                  className="stage-glass-sheen"
+                  style={{
+                    transform: `translate3d(${pX * 25}px, ${pY * 20}px, 0)`
+                  }}
+                />
+
+                {/* Embedded HUD Badge: Live Gaming Console Status (Top-Left) */}
+                <div className="hud-badge hud-badge-top-left">
+                  <span className="live-pulse-dot" />
                   <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', marginBottom: '0.2rem' }}>
-                      <span className="live-pulse-dot" />
-                      <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#C62828', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                        Active Session
-                      </span>
-                    </div>
-                    <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-main)' }}>
-                      Station S-03
-                    </div>
-                  </div>
-                  <span className="badge badge-active" style={{ fontSize: '0.75rem', padding: '0.25rem 0.65rem' }}>
-                    PC Setup • RTX 4070
-                  </span>
-                </div>
-
-                <div className="hero-station-body">
-                  <div className="station-meta-row">
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                      <Clock size={13} color="#C62828" /> Session Timer:
-                    </span>
-                    <strong style={{ fontFamily: 'var(--font-mono)', color: '#171717' }}>01h 24m (Active)</strong>
-                  </div>
-                  <div className="station-meta-row">
-                    <span>Active Gamer:</span>
-                    <strong>Rohan S. (USR-004)</strong>
-                  </div>
-
-                  {/* Merged Order Line Demonstrating Combined Operations */}
-                  <div style={{
-                    backgroundColor: '#FFF5F5',
-                    border: '1px solid #FFCDD2',
-                    borderRadius: '8px',
-                    padding: '0.65rem 0.85rem',
-                    marginTop: '0.35rem',
-                    fontSize: '0.8rem'
-                  }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, color: '#B71C1C', marginBottom: '0.25rem' }}>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                        <Coffee size={13} color="#C62828" /> Attached Café Order:
-                      </span>
-                      <span>₹240.00</span>
-                    </div>
-                    <div style={{ color: '#666666', fontSize: '0.75rem' }}>
-                      1x Caramel Cold Brew + 1x Cheesy Nachos
-                    </div>
-                  </div>
-
-                  {/* Real-time Consolidated Total */}
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'baseline',
-                    paddingTop: '0.65rem',
-                    borderTop: '1px dashed #E8E8E8'
-                  }}>
-                    <span style={{ fontSize: '0.8rem', color: '#666666' }}>Running Total (Gaming + Café):</span>
-                    <strong style={{ color: '#C62828', fontSize: '1.2rem', fontFamily: 'var(--font-mono)' }}>₹380.00</strong>
+                    <div className="hud-title">Console Station S-03</div>
+                    <div className="hud-sub">Aether-X • 4K 120FPS Active</div>
                   </div>
                 </div>
 
-                <div className="hero-station-footer">
-                  <span style={{ fontSize: '0.75rem', color: '#888888' }}>Front Desk & Café Floor Synchronized</span>
-                  <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#2E7D32' }} />
+                {/* Embedded HUD Badge: Chilled Coke Order (Top-Right) */}
+                <div className="hud-badge hud-badge-top-right">
+                  <div className="hud-ice-indicator">🥤</div>
+                  <div>
+                    <div className="hud-title">Chilled Coca-Cola</div>
+                    <div className="hud-sub">Delivered In-Seat • Ice Cold</div>
+                  </div>
+                </div>
+
+                {/* Bottom Consolidated Session Bill HUD Overlay */}
+                <div className="stage-bottom-bill-banner">
+                  <div className="stage-bill-content">
+                    <div className="stage-bill-left">
+                      <div className="stage-bill-tag">
+                        <Receipt size={13} color="var(--blue-primary)" />
+                        <span>SYNCHRONIZED TICKET #GV-842</span>
+                      </div>
+                      <div className="stage-bill-breakdown">
+                        <span>Console Session (01h 30m): ₹150</span>
+                        <span className="stage-bill-divider">•</span>
+                        <span>1x Chilled Coke + Nachos: ₹110</span>
+                      </div>
+                    </div>
+                    <div className="stage-bill-right">
+                      <div className="stage-total-label">Running Total</div>
+                      <div className="stage-total-val">₹260.00</div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Floating UI Card 1: Merged Console Indicator */}
+              {/* Floating UI Metric 1: Merged Staff Desk */}
               <div
                 className="floating-metric-card float-top-left"
                 style={{
-                  transform: `translate3d(${pX * -15}px, ${pY * -12}px, 0)`
+                  transform: `translate3d(${pX * -14}px, ${pY * -10 + sY * 0.06}px, 0)`
                 }}
               >
                 <div className="float-icon-box">
-                  <Users size={18} color="#C62828" />
+                  <Users size={18} color="var(--blue-primary)" />
                 </div>
                 <div>
                   <div className="float-val">Café Staff & Receptionist</div>
@@ -319,35 +324,19 @@ export default function LandingPage({ onLogin }) {
                 </div>
               </div>
 
-              {/* Floating UI Card 2: Connected Stations */}
+              {/* Floating UI Metric 2: Live Hardware Sync */}
               <div
                 className="floating-metric-card float-mid-right"
                 style={{
-                  transform: `translate3d(${pX * 18}px, ${pY * 14}px, 0)`
+                  transform: `translate3d(${pX * 14}px, ${pY * 12 + sY * -0.06}px, 0)`
                 }}
               >
                 <div className="float-icon-box">
-                  <Monitor size={18} color="#C62828" />
+                  <Monitor size={18} color="var(--blue-primary)" />
                 </div>
                 <div>
                   <div className="float-val">12 Hardware Stations</div>
                   <div className="float-lbl">PC & Console Live Sync</div>
-                </div>
-              </div>
-
-              {/* Floating UI Card 3: Invoicing */}
-              <div
-                className="floating-metric-card float-bottom-left"
-                style={{
-                  transform: `translate3d(${pX * -10}px, ${pY * 16}px, 0)`
-                }}
-              >
-                <div className="float-icon-box">
-                  <Receipt size={18} color="#C62828" />
-                </div>
-                <div>
-                  <div className="float-val">Unified Itemized Billing</div>
-                  <div className="float-lbl">Zero Discrepancy Checkout</div>
                 </div>
               </div>
             </div>
@@ -363,7 +352,7 @@ export default function LandingPage({ onLogin }) {
           >
             <span className="scroll-btn-text">Explore Unified Roles</span>
             <div className="scroll-btn-arrow">
-              <ChevronDown size={18} color="#C62828" />
+              <ChevronDown size={18} color="var(--blue-primary)" />
             </div>
           </button>
         </div>
@@ -390,18 +379,18 @@ export default function LandingPage({ onLogin }) {
               <div className="role-card-top">
                 <div className="role-badge-tag">Gamer Portal</div>
                 <div className="role-card-icon-wrap">
-                  <Gamepad2 size={24} color="#C62828" />
+                  <Gamepad2 size={24} color="var(--blue-primary)" />
                 </div>
               </div>
               <h3 className="role-card-title">Customer & Gamer</h3>
               <p className="role-card-desc">
                 Intuitive self-service portal for real-time station availability, advance seat reservations,
-                and direct in-session café ordering.
+                and direct in-session café & gaming gear ordering.
               </p>
               <ul className="role-duties-list">
                 <li>Check real-time station availability across PC & Console rigs</li>
                 <li>Make instant advance reservations for preferred time slots</li>
-                <li>Order refreshments delivered directly to their gaming station</li>
+                <li>Order refreshments and gaming accessories to their station</li>
                 <li>Monitor live session duration and access itemized digital receipts</li>
               </ul>
               <div className="role-card-bottom-scope">
@@ -416,7 +405,7 @@ export default function LandingPage({ onLogin }) {
                 <span>MERGED OPERATIONS DESK</span>
               </div>
               <div className="role-card-top">
-                <div className="role-badge-tag" style={{ background: '#FFF5F5', borderColor: '#FFCDD2' }}>
+                <div className="role-badge-tag" style={{ background: 'var(--blue-light)', borderColor: 'var(--blue-border)' }}>
                   Front Desk + Café Floor
                 </div>
                 <div className="role-card-icon-wrap merged-icon-box">
@@ -425,12 +414,12 @@ export default function LandingPage({ onLogin }) {
                   <Coffee size={20} color="#FFFFFF" />
                 </div>
               </div>
-              <h3 className="role-card-title" style={{ fontSize: '1.35rem', color: '#171717' }}>
+              <h3 className="role-card-title" style={{ fontSize: '1.35rem', color: 'var(--text-main)' }}>
                 Café Staff & Receptionist
               </h3>
               <p className="role-card-desc">
                 A single unified terminal combining front-desk check-ins, live hardware session timers,
-                kitchen food & beverage orders, inventory tracking, and final cashier billing.
+                kitchen food & beverage orders, gaming accessories sales, inventory tracking, and final cashier billing.
               </p>
               <ul className="role-duties-list">
                 <li>
@@ -440,16 +429,16 @@ export default function LandingPage({ onLogin }) {
                   <strong>Session Master:</strong> Start, monitor, and end gaming sessions with auto-tariff billing
                 </li>
                 <li>
-                  <strong>In-Seat Café Orders:</strong> Receive and dispatch snacks attached directly to station IDs
+                  <strong>Café & Gear Orders:</strong> Receive and dispatch snacks and accessories attached to station IDs
                 </li>
                 <li>
                   <strong>Inventory Oversight:</strong> Real-time ingredient deductions and stock reorder warnings
                 </li>
                 <li>
-                  <strong>Consolidated Checkout:</strong> Settle gaming duration + food orders on a single invoice
+                  <strong>Consolidated Checkout:</strong> Settle gaming duration + orders on a single invoice
                 </li>
               </ul>
-              <div className="role-card-bottom-scope" style={{ borderColor: '#FFCDD2', background: '#FFF5F5', color: '#B71C1C' }}>
+              <div className="role-card-bottom-scope" style={{ borderColor: 'var(--blue-border)', background: 'var(--blue-light)', color: 'var(--blue-dark)' }}>
                 <span>Role Scope:</span> Front Desk • Session Timers • Kitchen • Cashier
               </div>
             </div>
@@ -459,18 +448,18 @@ export default function LandingPage({ onLogin }) {
               <div className="role-card-top">
                 <div className="role-badge-tag">System Governance</div>
                 <div className="role-card-icon-wrap">
-                  <ShieldCheck size={24} color="#C62828" />
+                  <ShieldCheck size={24} color="var(--blue-primary)" />
                 </div>
               </div>
               <h3 className="role-card-title">System Administrator</h3>
               <p className="role-card-desc">
                 High-level governance over gaming hardware setups, employee credentials, hourly pricing structures,
-                master inventory, and financial reporting.
+                master inventory (café and accessories), and financial reporting.
               </p>
               <ul className="role-duties-list">
                 <li>Configure gaming station specs, hardware types, and hourly rates</li>
                 <li>Manage employee accounts, credentials, and access permissions</li>
-                <li>Oversee master café catalog, procurement, and stock levels</li>
+                <li>Add & manage café items as well as gaming accessories</li>
                 <li>Generate real-time revenue analytics, station utilization, and F&B reports</li>
               </ul>
               <div className="role-card-bottom-scope">
@@ -525,10 +514,10 @@ export default function LandingPage({ onLogin }) {
               {/* Integrated Call-To-Action Banner */}
               <div className="about-cta-banner">
                 <div>
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#171717', marginBottom: '0.35rem' }}>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '0.35rem' }}>
                     Ready to Experience GameVerse?
                   </h3>
-                  <p style={{ fontSize: '0.875rem', color: '#666666', margin: 0 }}>
+                  <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', margin: 0 }}>
                     Access Customer, Merged Staff (Café & Reception), or Administrator portals now.
                   </p>
                 </div>
@@ -541,7 +530,7 @@ export default function LandingPage({ onLogin }) {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.5rem',
-                    boxShadow: '0 4px 16px rgba(198, 40, 40, 0.25)'
+                    boxShadow: '0 4px 16px rgba(37, 99, 235, 0.25)'
                   }}
                 >
                   <span>Enter System Portals</span>

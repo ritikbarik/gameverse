@@ -11,10 +11,14 @@ export default function CustomerCafeOrder() {
   const [selectedItemId, setSelectedItemId] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [feedback, setFeedback] = useState(null);
+  const [activeCategory, setActiveCategory] = useState('ALL');
 
-  // Café items only
-  const cafeItems = inventory.filter(i => i.category === 'Café Items');
-  const selectedItem = cafeItems.find(i => i.item_id === selectedItemId);
+  // Both Café items and Gaming Accessories can be ordered to the station
+  const orderableItems = inventory.filter(i => {
+    if (activeCategory !== 'ALL' && i.category !== activeCategory) return false;
+    return true;
+  });
+  const selectedItem = inventory.find(i => i.item_id === selectedItemId);
 
   // Orders for this customer's active session
   const activeSessionOrders = activeSession
@@ -131,7 +135,35 @@ export default function CustomerCafeOrder() {
             </div>
 
             <div className="form-group">
-              <label className="form-label">Select Refreshment</label>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+                <label className="form-label" style={{ margin: 0 }}>Select Item to Order</label>
+                <div style={{ display: 'flex', gap: '0.35rem' }}>
+                  <button
+                    type="button"
+                    className={`filter-chip ${activeCategory === 'ALL' ? 'active' : ''}`}
+                    onClick={() => setActiveCategory('ALL')}
+                    style={{ padding: '0.2rem 0.5rem', fontSize: '0.72rem' }}
+                  >
+                    All
+                  </button>
+                  <button
+                    type="button"
+                    className={`filter-chip ${activeCategory === 'Café Items' ? 'active' : ''}`}
+                    onClick={() => setActiveCategory('Café Items')}
+                    style={{ padding: '0.2rem 0.5rem', fontSize: '0.72rem' }}
+                  >
+                    Café
+                  </button>
+                  <button
+                    type="button"
+                    className={`filter-chip ${activeCategory === 'Gaming Accessories' ? 'active' : ''}`}
+                    onClick={() => setActiveCategory('Gaming Accessories')}
+                    style={{ padding: '0.2rem 0.5rem', fontSize: '0.72rem' }}
+                  >
+                    Gear
+                  </button>
+                </div>
+              </div>
               <select
                 className="form-control"
                 value={selectedItemId}
@@ -139,10 +171,10 @@ export default function CustomerCafeOrder() {
                 disabled={!activeSession}
                 required
               >
-                <option value="">-- Choose Food or Drink --</option>
-                {cafeItems.map(item => (
+                <option value="">-- Choose Item ({orderableItems.length} available) --</option>
+                {orderableItems.map(item => (
                   <option key={item.item_id} value={item.item_id}>
-                    {item.item_name} - ₹{Number(item.unit_price).toFixed(2)} (Stock: {item.quantity_in_stock})
+                    [{item.category === 'Gaming Accessories' ? 'GEAR' : 'CAFÉ'}] {item.item_name} - ₹{Number(item.unit_price).toFixed(2)} (Stock: {item.quantity_in_stock})
                   </option>
                 ))}
               </select>

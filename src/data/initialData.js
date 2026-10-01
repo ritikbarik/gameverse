@@ -93,38 +93,7 @@ export const INITIAL_STATIONS = [
   }
 ];
 
-export const INITIAL_RESERVATIONS = [
-  {
-    reservation_id: 'RES-101',
-    customer_id: 'USR-004',
-    customer_name: 'Rohan Sharma',
-    station_id: 'STN-PC-01',
-    date: '2026-09-30',
-    start_time: '18:00',
-    end_time: '20:00',
-    status: 'Confirmed'
-  },
-  {
-    reservation_id: 'RES-102',
-    customer_id: 'USR-005',
-    customer_name: 'Emily Davis',
-    station_id: 'STN-CON-03',
-    date: '2026-09-30',
-    start_time: '19:00',
-    end_time: '21:00',
-    status: 'Confirmed'
-  },
-  {
-    reservation_id: 'RES-103',
-    customer_id: 'USR-004',
-    customer_name: 'Rohan Sharma',
-    station_id: 'STN-PC-02',
-    date: '2026-10-01',
-    start_time: '14:00',
-    end_time: '16:00',
-    status: 'Confirmed'
-  }
-];
+export const INITIAL_RESERVATIONS = [];
 
 export const INITIAL_SESSIONS = [];
 

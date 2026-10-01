@@ -1,9 +1,20 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
-import { Package, Plus, Edit2, AlertTriangle, CheckCircle2, Search } from 'lucide-react';
+import {
+  Package,
+  Plus,
+  Edit2,
+  AlertTriangle,
+  CheckCircle2,
+  Search,
+  Coffee,
+  Gamepad2,
+  Trash2,
+  Sparkles
+} from 'lucide-react';
 
 export default function AdminInventory() {
-  const { inventory, addInventoryItem, updateInventoryItem } = useApp();
+  const { inventory, addInventoryItem, updateInventoryItem, deleteInventoryItem } = useApp();
 
   const [categoryFilter, setCategoryFilter] = useState('ALL');
   const [searchTerm, setSearchTerm] = useState('');
@@ -13,9 +24,9 @@ export default function AdminInventory() {
   const [itemId, setItemId] = useState('');
   const [itemName, setItemName] = useState('');
   const [category, setCategory] = useState('Café Items');
-  const [stockQty, setStockQty] = useState('10');
+  const [stockQty, setStockQty] = useState('15');
   const [reorderLevel, setReorderLevel] = useState('5');
-  const [unitPrice, setUnitPrice] = useState('3.50');
+  const [unitPrice, setUnitPrice] = useState('80.00');
 
   const filteredItems = inventory.filter(item => {
     if (categoryFilter !== 'ALL' && item.category !== categoryFilter) return false;
@@ -24,15 +35,46 @@ export default function AdminInventory() {
   });
 
   const lowStockCount = inventory.filter(i => i.quantity_in_stock <= i.reorder_level).length;
+  const cafeCount = inventory.filter(i => i.category === 'Café Items').length;
+  const accessoriesCount = inventory.filter(i => i.category === 'Gaming Accessories').length;
 
-  const handleOpenAdd = () => {
+  const CAFE_PRESETS = [
+    { name: 'Caramel Cold Brew Coffee 350ml', price: '90.00', stock: '25', reorder: '8' },
+    { name: 'Monster Energy Drink 500ml', price: '120.00', stock: '20', reorder: '5' },
+    { name: 'Red Bull Energy 250ml', price: '125.00', stock: '24', reorder: '6' },
+    { name: 'Loaded Cheesy Nachos', price: '150.00', stock: '15', reorder: '4' },
+    { name: 'Crispy Chicken Crunch Burger', price: '180.00', stock: '12', reorder: '4' },
+    { name: 'Peri Peri French Fries', price: '99.00', stock: '20', reorder: '5' },
+    { name: 'Artisan Choco Lava Cake', price: '110.00', stock: '14', reorder: '4' },
+  ];
+
+  const ACCESSORY_PRESETS = [
+    { name: 'PS5 DualSense Wireless Controller', price: '5499.00', stock: '6', reorder: '2' },
+    { name: 'Xbox Series X/S Wireless Controller', price: '5199.00', stock: '6', reorder: '2' },
+    { name: 'RGB Mechanical Gaming Keyboard (Blue Switch)', price: '2999.00', stock: '8', reorder: '3' },
+    { name: '7.1 Surround Gaming Headset with Mic', price: '2499.00', stock: '10', reorder: '3' },
+    { name: 'Precision Speed Mousepad XL (900x400mm)', price: '499.00', stock: '20', reorder: '5' },
+    { name: 'Silicone Analog Thumb Grips Set (4-pack)', price: '199.00', stock: '35', reorder: '8' },
+    { name: 'Braided Fast-Charging Type-C Cable 2M', price: '299.00', stock: '25', reorder: '6' },
+    { name: 'VR Headset Breathable Eye Foam Cushion', price: '399.00', stock: '12', reorder: '4' },
+  ];
+
+  const handleOpenAddWithCategory = (cat) => {
     setEditingItem(null);
-    setItemId(`INV-${String(inventory.length + 1).padStart(2, '0')}`);
+    const prefix = cat === 'Gaming Accessories' ? 'ACC' : 'CAF';
+    const existingCount = inventory.filter(i => i.category === cat).length;
+    setItemId(`${prefix}-${String(existingCount + 1).padStart(2, '0')}`);
     setItemName('');
-    setCategory('Café Items');
-    setStockQty('15');
-    setReorderLevel('5');
-    setUnitPrice('4.00');
+    setCategory(cat);
+    if (cat === 'Gaming Accessories') {
+      setStockQty('10');
+      setReorderLevel('3');
+      setUnitPrice('499.00');
+    } else {
+      setStockQty('20');
+      setReorderLevel('5');
+      setUnitPrice('90.00');
+    }
     setShowModal(true);
   };
 
@@ -45,6 +87,22 @@ export default function AdminInventory() {
     setReorderLevel(item.reorder_level.toString());
     setUnitPrice(item.unit_price.toString());
     setShowModal(true);
+  };
+
+  const applyPreset = (preset) => {
+    setItemName(preset.name);
+    setUnitPrice(preset.price);
+    setStockQty(preset.stock);
+    setReorderLevel(preset.reorder);
+  };
+
+  const handleDelete = (id) => {
+    if (window.confirm(`Are you sure you want to delete item ${id}? This cannot be undone.`)) {
+      if (deleteInventoryItem) {
+        deleteInventoryItem(id);
+      }
+      setShowModal(false);
+    }
   };
 
   const handleSave = (e) => {
@@ -74,20 +132,45 @@ export default function AdminInventory() {
 
   return (
     <div>
-      <div className="page-header">
+      <div className="page-header" style={{ flexWrap: 'wrap', gap: '1rem' }}>
         <div>
           <h1 className="page-title">
-            <Package size={24} color="var(--accent-cyan)" />
-            Inventory Administration (FR-07)
+            <Package size={24} color="var(--accent-blue)" />
+            Inventory & Catalog Administration (FR-07)
           </h1>
           <div className="page-subtitle">
             Configure stock items, reorder thresholds, and pricing for café refreshments and gaming accessories
           </div>
         </div>
-        <button className="btn btn-cyan" onClick={handleOpenAdd}>
-          <Plus size={16} />
-          Add Inventory Item
-        </button>
+
+        {/* Dual Quick-Add Buttons for Café and Gaming Accessories */}
+        <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>
+          <button
+            className="btn btn-primary"
+            onClick={() => handleOpenAddWithCategory('Café Items')}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', fontWeight: 700 }}
+          >
+            <Coffee size={16} />
+            <span>+ Add Café Item</span>
+          </button>
+
+          <button
+            className="btn btn-secondary"
+            onClick={() => handleOpenAddWithCategory('Gaming Accessories')}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.45rem',
+              fontWeight: 700,
+              borderColor: 'var(--blue-border)',
+              color: 'var(--blue-primary)',
+              background: 'var(--blue-light)'
+            }}
+          >
+            <Gamepad2 size={16} />
+            <span>+ Add Gaming Accessory</span>
+          </button>
+        </div>
       </div>
 
       {/* Summary Stat Cards */}
@@ -95,7 +178,7 @@ export default function AdminInventory() {
         <div className="card">
           <div className="card-title">
             <span>Total Catalog Items</span>
-            <Package size={18} color="var(--accent-cyan)" />
+            <Package size={18} color="var(--accent-blue)" />
           </div>
           <div className="card-value">{inventory.length}</div>
           <div className="card-hint">Managed inventory catalog</div>
@@ -103,19 +186,36 @@ export default function AdminInventory() {
 
         <div className="card">
           <div className="card-title">
-            <span>Items Below Reorder Level</span>
-            <AlertTriangle size={18} color="var(--accent-rose)" />
+            <span>Café Refreshments</span>
+            <Coffee size={18} color="var(--accent-blue)" />
           </div>
-          <div className="card-value" style={{ color: lowStockCount > 0 ? 'var(--accent-rose)' : 'var(--accent-emerald)' }}>
+          <div className="card-value">{cafeCount}</div>
+          <div className="card-hint">Beverages, meals & snacks</div>
+        </div>
+
+        <div className="card">
+          <div className="card-title">
+            <span>Gaming Accessories</span>
+            <Gamepad2 size={18} color="var(--accent-blue)" />
+          </div>
+          <div className="card-value">{accessoriesCount}</div>
+          <div className="card-hint">Controllers, headsets & gear</div>
+        </div>
+
+        <div className="card">
+          <div className="card-title">
+            <span>Low Stock Warnings</span>
+            <AlertTriangle size={18} color={lowStockCount > 0 ? '#E65100' : 'var(--accent-emerald)'} />
+          </div>
+          <div className="card-value" style={{ color: lowStockCount > 0 ? '#E65100' : 'var(--accent-emerald)' }}>
             {lowStockCount}
           </div>
-          <div className="card-hint">Trigger replenishment orders</div>
+          <div className="card-hint">Items at or below reorder limit</div>
         </div>
 
         <div className="card">
           <div className="card-title">
             <span>Total Inventory Value</span>
-            <CheckCircle2 size={18} color="var(--accent-emerald)" />
           </div>
           <div className="card-value" style={{ color: 'var(--accent-emerald)' }}>
             ₹{inventory.reduce((sum, i) => sum + (i.quantity_in_stock * i.unit_price), 0).toFixed(2)}
@@ -133,19 +233,19 @@ export default function AdminInventory() {
           className={`filter-chip ${categoryFilter === 'ALL' ? 'active' : ''}`}
           onClick={() => setCategoryFilter('ALL')}
         >
-          All
+          All Items ({inventory.length})
         </button>
         <button
           className={`filter-chip ${categoryFilter === 'Café Items' ? 'active' : ''}`}
           onClick={() => setCategoryFilter('Café Items')}
         >
-          Café Items
+          Café Items ({cafeCount})
         </button>
         <button
           className={`filter-chip ${categoryFilter === 'Gaming Accessories' ? 'active' : ''}`}
           onClick={() => setCategoryFilter('Gaming Accessories')}
         >
-          Gaming Accessories
+          Gaming Accessories ({accessoriesCount})
         </button>
 
         <span style={{ margin: '0 0.5rem', color: 'var(--border-subtle)' }}>|</span>
@@ -154,25 +254,25 @@ export default function AdminInventory() {
           type="text"
           className="form-control"
           style={{ maxWidth: '280px', padding: '0.4rem 0.75rem' }}
-          placeholder="Search items..."
+          placeholder="Search items by name or ID..."
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
         />
       </div>
 
-      {/* Table */}
+      {/* Inventory Table */}
       <div className="table-container">
         <table className="data-table">
           <thead>
             <tr>
               <th>Item ID</th>
-              <th>Item Name</th>
+              <th>Catalog Item Name</th>
               <th>Category</th>
-              <th>Quantity in Stock</th>
-              <th>Reorder Level</th>
               <th>Unit Price</th>
-              <th>Status</th>
-              <th>Actions</th>
+              <th>In Stock</th>
+              <th>Reorder Limit</th>
+              <th>Stock Status</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -181,19 +281,28 @@ export default function AdminInventory() {
               return (
                 <tr key={item.item_id}>
                   <td className="table-code">{item.item_id}</td>
-                  <td><strong style={{ color: 'var(--text-main)' }}>{item.item_name}</strong></td>
-                  <td>{item.category}</td>
                   <td>
-                    <span style={{ fontWeight: 700, color: isLow ? 'var(--accent-rose)' : 'var(--text-main)' }}>
-                      {item.quantity_in_stock}
+                    <strong style={{ color: 'var(--text-main)' }}>{item.item_name}</strong>
+                  </td>
+                  <td>
+                    <span className="badge badge-active" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                      {item.category === 'Gaming Accessories' ? <Gamepad2 size={12} /> : <Coffee size={12} />}
+                      {item.category}
                     </span>
                   </td>
-                  <td>{item.reorder_level}</td>
-                  <td>₹{Number(item.unit_price).toFixed(2)}</td>
+                  <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
+                    ₹{Number(item.unit_price).toFixed(2)}
+                  </td>
+                  <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: isLow ? '#C62828' : 'var(--text-main)' }}>
+                    {item.quantity_in_stock}
+                  </td>
+                  <td style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
+                    {item.reorder_level}
+                  </td>
                   <td>
                     {isLow ? (
-                      <span className="badge badge-lowstock">
-                        <AlertTriangle size={11} /> BELOW REORDER
+                      <span className="badge badge-cancelled">
+                        <AlertTriangle size={11} /> REORDER REQUIRED
                       </span>
                     ) : (
                       <span className="badge badge-free">
@@ -202,13 +311,23 @@ export default function AdminInventory() {
                     )}
                   </td>
                   <td>
-                    <button
-                      className="btn btn-secondary btn-sm"
-                      onClick={() => handleOpenEdit(item)}
-                    >
-                      <Edit2 size={13} />
-                      Modify Item
-                    </button>
+                    <div style={{ display: 'flex', gap: '0.4rem' }}>
+                      <button
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => handleOpenEdit(item)}
+                      >
+                        <Edit2 size={13} />
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => handleDelete(item.item_id)}
+                        style={{ color: '#DC2626' }}
+                        title="Delete item"
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               );
@@ -220,12 +339,43 @@ export default function AdminInventory() {
       {/* Add / Modify Modal */}
       {showModal && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal-card" onClick={e => e.stopPropagation()}>
+          <div className="modal-card" onClick={e => e.stopPropagation()} style={{ maxWidth: '580px' }}>
             <div className="modal-header">
-              <h3>{editingItem ? `Modify ${editingItem.item_name}` : 'Add New Inventory Item'}</h3>
+              <h3>{editingItem ? `Modify ${editingItem.item_name}` : `Add New ${category === 'Gaming Accessories' ? 'Gaming Accessory' : 'Café Item'}`}</h3>
             </div>
             <form onSubmit={handleSave}>
               <div className="modal-body">
+                {/* Quick Presets helper when creating new items */}
+                {!editingItem && (
+                  <div style={{ marginBottom: '1.25rem', padding: '0.85rem', background: 'var(--bg-card-hover)', borderRadius: '8px', border: '1px solid var(--border-subtle)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.75rem', fontWeight: 800, color: 'var(--blue-primary)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>
+                      <Sparkles size={13} />
+                      <span>Quick Presets for {category}:</span>
+                    </div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                      {(category === 'Gaming Accessories' ? ACCESSORY_PRESETS : CAFE_PRESETS).map((p, idx) => (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => applyPreset(p)}
+                          style={{
+                            background: '#FFFFFF',
+                            border: '1px solid var(--border-subtle)',
+                            borderRadius: '6px',
+                            padding: '0.25rem 0.55rem',
+                            fontSize: '0.725rem',
+                            fontWeight: 600,
+                            color: 'var(--text-main)',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          + {p.name.split('(')[0]}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 <div className="form-group">
                   <label className="form-label">Item ID</label>
                   <input
@@ -245,21 +395,21 @@ export default function AdminInventory() {
                     className="form-control"
                     value={itemName}
                     onChange={e => setItemName(e.target.value)}
-                    placeholder="e.g. Energy Drink 500ml or Mechanical Keycaps"
+                    placeholder="e.g. PS5 DualSense Controller or Energy Drink 500ml"
                     required
                   />
                 </div>
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label className="form-label">Category (SRS)</label>
+                    <label className="form-label">Category</label>
                     <select
                       className="form-control"
                       value={category}
                       onChange={e => setCategory(e.target.value)}
                     >
-                      <option value="Café Items">Café Items</option>
-                      <option value="Gaming Accessories">Gaming Accessories</option>
+                      <option value="Café Items">Café Items (Food & Beverages)</option>
+                      <option value="Gaming Accessories">Gaming Accessories (Gear & Peripherals)</option>
                     </select>
                   </div>
 
@@ -267,8 +417,8 @@ export default function AdminInventory() {
                     <label className="form-label">Unit Price (₹)</label>
                     <input
                       type="number"
-                      step="0.25"
-                      min="0.25"
+                      step="0.50"
+                      min="0.50"
                       className="form-control"
                       value={unitPrice}
                       onChange={e => setUnitPrice(e.target.value)}
@@ -304,17 +454,29 @@ export default function AdminInventory() {
                 </div>
               </div>
 
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => setShowModal(false)}
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="btn btn-cyan">
-                  {editingItem ? 'Save Item Changes' : 'Create Item'}
-                </button>
+              <div className="modal-footer" style={{ justifyContent: editingItem ? 'space-between' : 'flex-end' }}>
+                {editingItem && (
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => handleDelete(editingItem.item_id)}
+                    style={{ color: '#DC2626', borderColor: '#FECACA', background: '#FEF2F2' }}
+                  >
+                    <Trash2 size={14} /> Delete
+                  </button>
+                )}
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => setShowModal(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button type="submit" className="btn btn-primary">
+                    {editingItem ? 'Save Item Changes' : 'Create Item'}
+                  </button>
+                </div>
               </div>
             </form>
           </div>

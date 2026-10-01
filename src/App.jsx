@@ -261,7 +261,7 @@ export default function App() {
           <Navbar
             onLogout={() => {
               logout();
-              setShowLanding(false);
+              setShowLanding(true);
             }}
           />
 

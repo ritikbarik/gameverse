@@ -5,6 +5,7 @@ import {
   Users,
   ShieldAlert,
   ArrowRight,
+  ArrowLeft,
   User,
   Key,
   ShieldCheck,
@@ -29,11 +30,11 @@ export default function LoginScreen({ onLoginSuccess, onBackToLanding }) {
       title: 'Customer Portal',
       role: 'Customer',
       tag: 'Gamer & Visitor Access',
-      tagColor: '#C62828',
-      tagBg: '#FDECEC',
+      tagColor: '#2563EB',
+      tagBg: '#EFF6FF',
       icon: Gamepad2,
-      desc: 'Browse real-time station availability, reserve PC/Console/VR setups, order café snacks, and track live session bills.',
-      features: ['Station Availability', 'Reservations', 'Café Ordering', 'Itemized Bills'],
+      desc: 'Browse real-time station availability, reserve PC/Console/VR setups, order café snacks and gaming gear, and track live session bills.',
+      features: ['Station Availability', 'Reservations', 'Café & Gear Orders', 'Itemized Bills'],
       defaultUser: users.find(u => u.role === 'Customer') || {
         username: 'rohan',
         password: 'cust123',
@@ -47,8 +48,8 @@ export default function LoginScreen({ onLoginSuccess, onBackToLanding }) {
       title: 'Café Staff & Receptionist',
       role: 'Staff',
       tag: 'Merged Operations Desk',
-      tagColor: '#B71C1C',
-      tagBg: '#FFF5F5',
+      tagColor: '#1D4ED8',
+      tagBg: '#EFF6FF',
       icon: Users,
       desc: 'Merged operations for front desk and café floor: customer check-ins, reservations, active session tracking, food orders, and billing.',
       features: ['Front Desk Check-in', 'Start/End Sessions', 'Café Orders', 'Payment Processing', 'Stock Alerts'],
@@ -65,8 +66,8 @@ export default function LoginScreen({ onLoginSuccess, onBackToLanding }) {
       title: 'Administrator Portal',
       role: 'Administrator',
       tag: 'Full System Control',
-      tagColor: '#C62828',
-      tagBg: '#FDECEC',
+      tagColor: '#2563EB',
+      tagBg: '#EFF6FF',
       icon: ShieldCheck,
       desc: 'Complete system oversight: configure gaming stations & pricing, manage employee credentials, maintain inventory, and generate business reports.',
       features: ['Station Config', 'Staff & User Mgmt', 'Master Inventory', 'Revenue & Usage Reports'],
@@ -125,6 +126,28 @@ export default function LoginScreen({ onLoginSuccess, onBackToLanding }) {
       position: 'relative'
     }}>
       <div style={{ width: '100%', maxWidth: '980px' }}>
+        {/* Back to Landing navigation button */}
+        {onBackToLanding && (
+          <div style={{ marginBottom: '1.25rem' }}>
+            <button
+              onClick={onBackToLanding}
+              className="btn btn-secondary btn-sm"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.45rem',
+                fontWeight: 700,
+                color: 'var(--blue-primary)',
+                borderColor: 'var(--blue-border)',
+                background: 'var(--blue-light)'
+              }}
+            >
+              <ArrowLeft size={15} />
+              <span>← Return to Landing Page</span>
+            </button>
+          </div>
+        )}
+
         {/* Brand Header */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div style={{
@@ -134,8 +157,8 @@ export default function LoginScreen({ onLoginSuccess, onBackToLanding }) {
             width: 60,
             height: 60,
             borderRadius: '18px',
-            background: '#C62828',
-            boxShadow: '0 8px 24px rgba(198, 40, 40, 0.25)',
+            background: '#2563EB',
+            boxShadow: '0 8px 24px rgba(37, 99, 235, 0.25)',
             marginBottom: '1rem'
           }}>
             <Gamepad2 size={32} color="#ffffff" />
@@ -156,7 +179,7 @@ export default function LoginScreen({ onLoginSuccess, onBackToLanding }) {
             borderRadius: 'var(--radius-full)',
             border: '1px solid var(--border-subtle)',
             fontSize: '0.75rem',
-            color: '#C62828',
+            color: '#2563EB',
             fontWeight: 700,
             marginTop: '0.75rem',
             boxShadow: 'var(--shadow-sm)'
@@ -178,148 +201,170 @@ export default function LoginScreen({ onLoginSuccess, onBackToLanding }) {
                 onClick={() => handlePortalSelect(portal)}
               >
                 <div className="portal-icon-box">
-                  <Icon size={26} />
+                  <Icon size={24} />
                 </div>
-
-                <div
-                  className="portal-card-tag"
-                  style={{ color: portal.tagColor, background: portal.tagBg }}
-                >
-                  {portal.tag}
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
+                    <div className="portal-title">{portal.title}</div>
+                    <span className="badge" style={{
+                      backgroundColor: portal.tagBg,
+                      color: portal.tagColor,
+                      borderColor: portal.tagColor,
+                      fontSize: '0.65rem'
+                    }}>
+                      {portal.tag}
+                    </span>
+                  </div>
+                  <div className="portal-desc">{portal.desc}</div>
+                  <div className="portal-features">
+                    {portal.features.map(f => (
+                      <span key={f} className="portal-pill">{f}</span>
+                    ))}
+                  </div>
                 </div>
-
-                <h3 className="portal-title">{portal.title}</h3>
-                <p className="portal-desc">{portal.desc}</p>
-
-                <div className="portal-badge-features">
-                  {portal.features.map((feat, fIdx) => (
-                    <span key={fIdx} className="portal-feature-pill">{feat}</span>
-                  ))}
-                </div>
-
-                <button
-                  type="button"
-                  className="portal-btn-enter"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleQuickLogin(portal);
-                  }}
-                  title={`Direct 1-Click Access as ${portal.defaultUser.name}`}
-                >
-                  <span>Quick Access ({portal.defaultUser.name})</span>
-                  <ArrowRight size={15} />
-                </button>
               </div>
             );
           })}
         </div>
 
-        {/* Step 2: Credential Verification Box for Selected Portal */}
-        <div style={{
-          marginTop: '2rem',
-          background: 'var(--bg-card)',
-          borderRadius: 'var(--radius-lg)',
-          border: '1px solid var(--border-subtle)',
-          padding: '2rem',
-          boxShadow: 'var(--shadow-md)'
-        }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+        {/* Step 2: Login Form for Selected Portal */}
+        <div className="card login-form-card" style={{ maxWidth: '560px', margin: '0 auto', boxShadow: 'var(--shadow-lg)' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '1.25rem',
+            paddingBottom: '0.85rem',
+            borderBottom: '1px solid var(--border-subtle)'
+          }}>
             <div>
-              <h2 style={{ fontSize: '1.125rem', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Lock size={18} color="#C62828" />
-                <span>Verify Credentials for {currentPortalConfig.title}</span>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.06em' }}>
+                Authenticating Into
+              </div>
+              <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)' }}>
+                {currentPortalConfig.title}
               </h2>
-              <p style={{ fontSize: '0.8125rem', color: '#64748b' }}>
-                SRS FR-01 Authentication: Access restricted strictly to {currentPortalConfig.role} modules.
-              </p>
             </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ fontSize: '0.75rem', color: '#64748b' }}>Demo Pre-fill:</span>
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm"
-                onClick={() => {
-                  setUsername(currentPortalConfig.defaultUser.username);
-                  setPassword(currentPortalConfig.defaultUser.password);
-                }}
-              >
-                {currentPortalConfig.defaultUser.username} / {currentPortalConfig.defaultUser.password}
-              </button>
-            </div>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm"
+              onClick={() => handleQuickLogin(currentPortalConfig)}
+              style={{
+                fontSize: '0.75rem',
+                padding: '0.35rem 0.75rem',
+                borderColor: currentPortalConfig.tagColor,
+                color: currentPortalConfig.tagColor
+              }}
+              title="Quick demo access with pre-filled test credentials"
+            >
+              <Sparkles size={13} />
+              <span>One-Click Demo Entry</span>
+            </button>
           </div>
 
           {errorMsg && (
             <div style={{
-              background: '#fee2e2',
-              border: '1px solid #ef4444',
-              color: '#b91c1c',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
               padding: '0.75rem 1rem',
               borderRadius: 'var(--radius-md)',
               fontSize: '0.8125rem',
               marginBottom: '1.25rem',
-              fontWeight: 500
+              background: '#FFF5F5',
+              border: '1px solid #FFCDD2',
+              color: '#C62828'
             }}>
-              {errorMsg}
+              <ShieldAlert size={16} />
+              <span>{errorMsg}</span>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: '1rem', alignItems: 'flex-end' }}>
-            <div className="form-group" style={{ marginBottom: 0 }}>
-              <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                <User size={14} />
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label className="form-label" style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>Username</span>
+                <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Demo: {currentPortalConfig.defaultUser.username}</span>
               </label>
-              <input
-                type="text"
-                className="form-control"
-                value={username}
-                onChange={e => setUsername(e.target.value)}
-                placeholder="Enter username"
-                required
-              />
+              <div style={{ position: 'relative' }}>
+                <input
+                  type="text"
+                  className="form-control"
+                  style={{ paddingLeft: '2.4rem' }}
+                  value={username}
+                  onChange={e => setUsername(e.target.value)}
+                  placeholder="Enter system username"
+                  required
+                />
+                <User size={16} color="var(--text-muted)" style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }} />
+              </div>
             </div>
 
-            <div className="form-group" style={{ marginBottom: 0 }}>
-              <label className="form-label" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                <Key size={14} />
+            <div className="form-group">
+              <label className="form-label" style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>Password</span>
+                <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Demo: {currentPortalConfig.defaultUser.password}</span>
               </label>
-              <input
-                type="password"
-                className="form-control"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder="Enter password"
-                required
-              />
+              <div style={{ position: 'relative' }}>
+                <input
+                  type="password"
+                  className="form-control"
+                  style={{ paddingLeft: '2.4rem' }}
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="Enter portal password"
+                  required
+                />
+                <Key size={16} color="var(--text-muted)" style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }} />
+              </div>
             </div>
 
             <button
               type="submit"
               className="btn btn-primary"
-              style={{ padding: '0.65rem 1.5rem', height: '42px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+              style={{
+                width: '100%',
+                padding: '0.85rem',
+                fontSize: '0.95rem',
+                fontWeight: 700,
+                marginTop: '0.5rem',
+                boxShadow: '0 4px 16px rgba(37, 99, 235, 0.25)'
+              }}
             >
-              <span>Sign In</span>
+              <span>Authenticate & Enter Portal</span>
               <ArrowRight size={16} />
             </button>
           </form>
-        </div>
 
-        {/* Footer Navigation */}
-        <div style={{ textAlign: 'center', marginTop: '1.75rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-          {onBackToLanding && (
-            <button
-              type="button"
-              onClick={onBackToLanding}
-              className="btn btn-secondary btn-sm"
-              style={{ background: '#ffffff', color: '#C62828', borderColor: '#E8E8E8' }}
-            >
-              ← Back to Home
-            </button>
-          )}
-          <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600 }}>
-            GAMEVERSE CENTRALIZED GAMING CAFÉ MANAGEMENT SYSTEM • WINDOWS 10/11 LAN ENVIRONMENT
+          {/* Quick Demo Switcher Footer */}
+          <div style={{
+            marginTop: '1.25rem',
+            paddingTop: '1rem',
+            borderTop: '1px dashed var(--border-subtle)',
+            fontSize: '0.75rem',
+            color: 'var(--text-muted)',
+            textAlign: 'center'
+          }}>
+            <div style={{ fontWeight: 600, marginBottom: '0.45rem' }}>Switch Demo Account:</div>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
+              {portals.map(p => (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => handlePortalSelect(p)}
+                  className="btn btn-secondary btn-sm"
+                  style={{
+                    fontSize: '0.7rem',
+                    padding: '0.2rem 0.6rem',
+                    background: selectedPortal === p.id ? 'var(--blue-light)' : '#ffffff',
+                    color: selectedPortal === p.id ? 'var(--blue-primary)' : 'var(--text-secondary)',
+                    borderColor: selectedPortal === p.id ? 'var(--blue-border)' : 'var(--border-subtle)'
+                  }}
+                >
+                  {p.title.split(' ')[0]} ({p.defaultUser.username})
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
