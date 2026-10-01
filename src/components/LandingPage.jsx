@@ -53,7 +53,7 @@ export default function LandingPage({ onLogin }) {
     const handleScroll = () => {
       setScrollY(window.scrollY);
 
-      const sections = ['home', 'hardware', 'experience', 'lifestyle', 'roles'];
+      const sections = ['home', 'hardware', 'experience', 'roles'];
       const scrollPos = window.scrollY + 160;
 
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -120,12 +120,6 @@ export default function LandingPage({ onLogin }) {
               className={`dark-nav-link ${activeNav === 'experience' ? 'active' : ''}`}
             >
               Experience
-            </button>
-            <button
-              onClick={() => scrollToSection('lifestyle')}
-              className={`dark-nav-link ${activeNav === 'lifestyle' ? 'active' : ''}`}
-            >
-              Lifestyle
             </button>
             <button
               onClick={() => scrollToSection('roles')}
@@ -483,75 +477,12 @@ export default function LandingPage({ onLogin }) {
       </section>
 
       {/* =========================================================================
-          SCENE 04 — LIFESTYLE: Chilled Coca-Cola & In-Seat Culinary Refreshment
+          SCENE 04 — UNIFIED SYSTEM ROLES (3 ROLES, ZERO FRICTION) & FINAL CTA
           ========================================================================= */}
-      <section id="lifestyle" className="dark-section">
+      <section id="roles" className="dark-section">
         <div className="dark-container">
           <div className="dark-section-header">
-            <div className="dark-section-kicker">SCENE 04 • REFRESHMENT & LIFESTYLE</div>
-            <h2 className="dark-section-title">In-Seat Refreshment. Coca-Cola Lifestyle.</h2>
-            <p className="dark-section-subtitle">
-              Elevate the gaming night with ice-cold beverages and fresh café bites
-              delivered directly to the gamer's station without pausing the match.
-            </p>
-          </div>
-
-          <div className="dark-grid-3">
-            <div className="dark-card">
-              <div className="dark-card-icon-box">
-                <Coffee size={22} color="#E50914" />
-              </div>
-              <h3 className="dark-card-title">In-Seat Self-Ordering</h3>
-              <p className="dark-card-body">
-                Gamers browse the digital café menu directly from their seat. Cold Coca-Cola,
-                energy sips, nachos, and hot pizza slices can be ordered in two clicks.
-              </p>
-              <div className="dark-card-metric">
-                <span className="metric-num">2 Clicks</span>
-                <span className="metric-lbl">In-Seat Fast Ordering</span>
-              </div>
-            </div>
-
-            <div className="dark-card">
-              <div className="dark-card-icon-box">
-                <Zap size={22} color="#E50914" />
-              </div>
-              <h3 className="dark-card-title">Instant Kitchen Routing</h3>
-              <p className="dark-card-body">
-                Orders dispatch instantly to the kitchen floor display. Staff receive the station number
-                and customer name, delivering chilled cans and hot food in record time.
-              </p>
-              <div className="dark-card-metric">
-                <span className="metric-num">&lt; 4 Mins</span>
-                <span className="metric-lbl">Average In-Seat Delivery</span>
-              </div>
-            </div>
-
-            <div className="dark-card">
-              <div className="dark-card-icon-box">
-                <Package size={22} color="#E50914" />
-              </div>
-              <h3 className="dark-card-title">Auto-Depleting Inventory</h3>
-              <p className="dark-card-body">
-                Stock counts deplete automatically upon order confirmation. Kitchen staff receive
-                real-time alerts when Coca-Cola cans or snack supplies fall below par levels.
-              </p>
-              <div className="dark-card-metric">
-                <span className="metric-num">Real-Time</span>
-                <span className="metric-lbl">Stock Par Monitoring</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          SCENE 05 — UNIFIED SYSTEM ROLES (3 ROLES, ZERO FRICTION) & FINAL CTA
-          ========================================================================= */}
-      <section id="roles" className="dark-section dark-section-alt">
-        <div className="dark-container">
-          <div className="dark-section-header">
-            <div className="dark-section-kicker">SCENE 05 • ACCESS MODEL</div>
+            <div className="dark-section-kicker">SCENE 04 • ACCESS MODEL</div>
             <h2 className="dark-section-title">Three Roles. Zero Friction.</h2>
             <p className="dark-section-subtitle">
               We have merged front desk reception and café floor operations into a single staff command center,
