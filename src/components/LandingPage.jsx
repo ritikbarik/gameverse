@@ -1,19 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useApp } from '../context/AppContext';
+import React, { useState, useEffect } from 'react';
 import {
   Gamepad2,
   Monitor,
-  CalendarCheck,
-  PlaySquare,
   Coffee,
   Receipt,
-  FileBarChart,
   ArrowRight,
   ChevronDown,
   Users,
   ShieldCheck,
   CheckCircle2,
   Clock,
+  Sparkles,
+  Zap,
+  Layers,
   ChevronRight
 } from 'lucide-react';
 
@@ -44,10 +43,10 @@ export default function LandingPage({ onLogin }) {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [prefersReducedMotion]);
 
-  // Track active section on scroll
+  // Track active section on scroll (Only home, roles, about)
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'features', 'how-it-works', 'roles', 'about'];
+      const sections = ['home', 'roles', 'about'];
       const scrollPos = window.scrollY + 140;
 
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -75,7 +74,7 @@ export default function LandingPage({ onLogin }) {
   return (
     <div className="landing-page-root">
       {/* =========================================================================
-          1. STICKY NAVBAR
+          1. STICKY NAVBAR (Clean, Minimal, Modern)
           ========================================================================= */}
       <header className="landing-navbar-sticky">
         <div className="landing-navbar-container">
@@ -90,11 +89,11 @@ export default function LandingPage({ onLogin }) {
             </div>
             <div>
               <div className="landing-brand-name">GameVerse</div>
-              <div className="landing-brand-tagline">Gaming Café Management System</div>
+              <div className="landing-brand-tagline">Unified Gaming Café Platform</div>
             </div>
           </div>
 
-          {/* Center Navigation Links */}
+          {/* Center Navigation Links (Features & How-It-Works Removed) */}
           <nav className="landing-nav-menu">
             <button
               onClick={() => scrollToSection('home')}
@@ -103,22 +102,10 @@ export default function LandingPage({ onLogin }) {
               Home
             </button>
             <button
-              onClick={() => scrollToSection('features')}
-              className={`landing-nav-link ${activeNav === 'features' ? 'active' : ''}`}
-            >
-              Features
-            </button>
-            <button
-              onClick={() => scrollToSection('how-it-works')}
-              className={`landing-nav-link ${activeNav === 'how-it-works' ? 'active' : ''}`}
-            >
-              How It Works
-            </button>
-            <button
               onClick={() => scrollToSection('roles')}
               className={`landing-nav-link ${activeNav === 'roles' ? 'active' : ''}`}
             >
-              Roles
+              Unified Roles
             </button>
             <button
               onClick={() => scrollToSection('about')}
@@ -128,7 +115,7 @@ export default function LandingPage({ onLogin }) {
             </button>
           </nav>
 
-          {/* Right Action: Login */}
+          {/* Right Action: Launch System Portal */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
             <button
               className="btn btn-primary"
@@ -139,10 +126,11 @@ export default function LandingPage({ onLogin }) {
                 fontWeight: 700,
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '0.45rem'
+                gap: '0.45rem',
+                boxShadow: '0 4px 14px rgba(198, 40, 40, 0.25)'
               }}
             >
-              <span>Login</span>
+              <span>Launch Portal</span>
               <ArrowRight size={15} />
             </button>
           </div>
@@ -150,10 +138,10 @@ export default function LandingPage({ onLogin }) {
       </header>
 
       {/* =========================================================================
-          2. HERO SECTION
+          2. HERO SECTION (Elevated, State-Of-The-Art Aesthetics)
           ========================================================================= */}
       <section id="home" className="landing-section hero-section-wrapper">
-        {/* Subtle Background Layer (Parallax Layer 1) */}
+        {/* Subtle Ambient Parallax Gradient Blobs */}
         <div
           className="hero-bg-shapes"
           style={{
@@ -165,41 +153,79 @@ export default function LandingPage({ onLogin }) {
         </div>
 
         <div className="hero-content-container">
-          {/* Left Column: Headlines */}
+          {/* Left Column: Headlines & Call to Actions */}
           <div className="hero-text-col">
             <div className="hero-kicker-pill">
               <span className="hero-kicker-dot" />
-              <span>GAMEVERSE • CENTRALIZED SYSTEM</span>
+              <span>UNIFIED ARCHITECTURE • MERGED OPERATIONS</span>
             </div>
 
             <h1 className="hero-main-title">
-              Your Gaming Café,
+              Elevate Your
               <br />
-              <span className="hero-title-accent">Simplified.</span>
+              Gaming Café.
+              <br />
+              <span className="hero-title-accent">Front Desk & Café, Merged.</span>
             </h1>
 
             <p className="hero-description">
-              Manage stations, reservations, gaming sessions, café orders,
-              billing, inventory, and reports from one connected system.
+              Eliminate disjointed logs and paper receipts. GameVerse consolidates station reservations,
+              real-time gaming timers, in-seat food orders, inventory tracking, and single-click itemized
+              invoicing into one unified operations system.
             </p>
+
+            <div style={{ display: 'flex', gap: '0.85rem', flexWrap: 'wrap', marginBottom: '1.75rem' }}>
+              <button
+                className="btn btn-primary"
+                onClick={onLogin}
+                style={{
+                  padding: '0.75rem 1.6rem',
+                  fontSize: '0.95rem',
+                  fontWeight: 700,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  boxShadow: '0 8px 22px rgba(198, 40, 40, 0.28)'
+                }}
+              >
+                <span>Enter System Portal</span>
+                <ArrowRight size={16} />
+              </button>
+
+              <button
+                className="btn btn-secondary"
+                onClick={() => scrollToSection('roles')}
+                style={{
+                  padding: '0.75rem 1.4rem',
+                  fontSize: '0.95rem',
+                  fontWeight: 700,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
+                }}
+              >
+                <span>Explore Unified Roles</span>
+                <ChevronDown size={16} color="#C62828" />
+              </button>
+            </div>
 
             <div className="hero-highlight-chips">
               <div className="hero-chip">
                 <CheckCircle2 size={15} color="#C62828" />
-                <span>Station Reservations</span>
+                <span>Café Staff & Receptionist Merged</span>
               </div>
               <div className="hero-chip">
                 <CheckCircle2 size={15} color="#C62828" />
-                <span>Café Orders & Inventory</span>
+                <span>Live Hardware Timers</span>
               </div>
               <div className="hero-chip">
                 <CheckCircle2 size={15} color="#C62828" />
-                <span>Consolidated Invoicing</span>
+                <span>Consolidated Itemized Billing</span>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Hero Visual Composition (Parallax Layer 2 & 3) */}
+          {/* Right Column: Hero Visual Composition (Live Merged Operations Preview) */}
           <div className="hero-visual-col">
             <div
               className="hero-composition"
@@ -207,44 +233,77 @@ export default function LandingPage({ onLogin }) {
                 transform: `translate3d(${pX * 8}px, ${pY * 6}px, 0)`
               }}
             >
-              {/* Primary Card: Station S-03 */}
+              {/* Primary Showcase Card: Active Station S-03 with Merged Operations */}
               <div className="hero-station-card">
                 <div className="hero-station-header">
                   <div>
-                    <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#888888', textTransform: 'uppercase' }}>
-                      Gaming Station
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', marginBottom: '0.2rem' }}>
+                      <span className="live-pulse-dot" />
+                      <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#C62828', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        Active Session
+                      </span>
                     </div>
-                    <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-main)' }}>
-                      S-03
+                    <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-main)' }}>
+                      Station S-03
                     </div>
                   </div>
-                  <span className="badge badge-free" style={{ fontSize: '0.75rem' }}>
-                    Available
+                  <span className="badge badge-active" style={{ fontSize: '0.75rem', padding: '0.25rem 0.65rem' }}>
+                    PC Setup • RTX 4070
                   </span>
                 </div>
 
                 <div className="hero-station-body">
                   <div className="station-meta-row">
-                    <span>Hardware Type:</span>
-                    <strong>PC Setup (RTX 4070)</strong>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <Clock size={13} color="#C62828" /> Session Timer:
+                    </span>
+                    <strong style={{ fontFamily: 'var(--font-mono)', color: '#171717' }}>01h 24m (Active)</strong>
                   </div>
                   <div className="station-meta-row">
-                    <span>Hourly Rate:</span>
-                    <strong style={{ color: '#C62828', fontSize: '1.05rem' }}>₹100.00 / hr</strong>
+                    <span>Active Gamer:</span>
+                    <strong>Rohan S. (USR-004)</strong>
                   </div>
-                  <div className="station-meta-row">
-                    <span>Network:</span>
-                    <span>High-Speed LAN</span>
+
+                  {/* Merged Order Line Demonstrating Combined Operations */}
+                  <div style={{
+                    backgroundColor: '#FFF5F5',
+                    border: '1px solid #FFCDD2',
+                    borderRadius: '8px',
+                    padding: '0.65rem 0.85rem',
+                    marginTop: '0.35rem',
+                    fontSize: '0.8rem'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700, color: '#B71C1C', marginBottom: '0.25rem' }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                        <Coffee size={13} color="#C62828" /> Attached Café Order:
+                      </span>
+                      <span>₹240.00</span>
+                    </div>
+                    <div style={{ color: '#666666', fontSize: '0.75rem' }}>
+                      1x Caramel Cold Brew + 1x Cheesy Nachos
+                    </div>
+                  </div>
+
+                  {/* Real-time Consolidated Total */}
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'baseline',
+                    paddingTop: '0.65rem',
+                    borderTop: '1px dashed #E8E8E8'
+                  }}>
+                    <span style={{ fontSize: '0.8rem', color: '#666666' }}>Running Total (Gaming + Café):</span>
+                    <strong style={{ color: '#C62828', fontSize: '1.2rem', fontFamily: 'var(--font-mono)' }}>₹380.00</strong>
                   </div>
                 </div>
 
                 <div className="hero-station-footer">
-                  <span style={{ fontSize: '0.75rem', color: '#888888' }}>Ready for Customer Check-in</span>
-                  <div style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: '#2E7D32' }} />
+                  <span style={{ fontSize: '0.75rem', color: '#888888' }}>Front Desk & Café Floor Synchronized</span>
+                  <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#2E7D32' }} />
                 </div>
               </div>
 
-              {/* Floating UI Card 1: Stations Count */}
+              {/* Floating UI Card 1: Merged Console Indicator */}
               <div
                 className="floating-metric-card float-top-left"
                 style={{
@@ -252,15 +311,15 @@ export default function LandingPage({ onLogin }) {
                 }}
               >
                 <div className="float-icon-box">
-                  <Monitor size={18} color="#C62828" />
+                  <Users size={18} color="#C62828" />
                 </div>
                 <div>
-                  <div className="float-val">12 Stations</div>
-                  <div className="float-lbl">Total Capacity (Demo)</div>
+                  <div className="float-val">Café Staff & Receptionist</div>
+                  <div className="float-lbl">Merged Operations Desk</div>
                 </div>
               </div>
 
-              {/* Floating UI Card 2: Active Sessions */}
+              {/* Floating UI Card 2: Connected Stations */}
               <div
                 className="floating-metric-card float-mid-right"
                 style={{
@@ -268,15 +327,15 @@ export default function LandingPage({ onLogin }) {
                 }}
               >
                 <div className="float-icon-box">
-                  <PlaySquare size={18} color="#C62828" />
+                  <Monitor size={18} color="#C62828" />
                 </div>
                 <div>
-                  <div className="float-val">6 Active Sessions</div>
-                  <div className="float-lbl">Ongoing Timers (Demo)</div>
+                  <div className="float-val">12 Hardware Stations</div>
+                  <div className="float-lbl">PC & Console Live Sync</div>
                 </div>
               </div>
 
-              {/* Floating UI Card 3: Today's Revenue */}
+              {/* Floating UI Card 3: Invoicing */}
               <div
                 className="floating-metric-card float-bottom-left"
                 style={{
@@ -287,22 +346,22 @@ export default function LandingPage({ onLogin }) {
                   <Receipt size={18} color="#C62828" />
                 </div>
                 <div>
-                  <div className="float-val">₹3,240 Revenue</div>
-                  <div className="float-lbl">Settled Today (Demo)</div>
+                  <div className="float-val">Unified Itemized Billing</div>
+                  <div className="float-lbl">Zero Discrepancy Checkout</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Scroll to Explore - Section 7 Requirement */}
+        {/* Scroll To Unified Roles */}
         <div className="hero-scroll-explore-container">
           <button
             className="hero-scroll-btn"
-            onClick={() => scrollToSection('features')}
-            aria-label="Scroll to Features section"
+            onClick={() => scrollToSection('roles')}
+            aria-label="Scroll to Unified Roles section"
           >
-            <span className="scroll-btn-text">Scroll to Explore</span>
+            <span className="scroll-btn-text">Explore Unified Roles</span>
             <div className="scroll-btn-arrow">
               <ChevronDown size={18} color="#C62828" />
             </div>
@@ -311,238 +370,119 @@ export default function LandingPage({ onLogin }) {
       </section>
 
       {/* =========================================================================
-          3. FEATURES SECTION
-          ========================================================================= */}
-      <section id="features" className="landing-section bg-section-subtle">
-        <div className="landing-container">
-          <div className="section-header-centered">
-            <div className="section-pill">SRS OPERATIONAL MODULES</div>
-            <h2 className="section-title">Everything You Need to Run Your Café</h2>
-            <p className="section-subtitle">
-              GameVerse integrates the complete operational requirements of a modern gaming café into unified workflows.
-            </p>
-          </div>
-
-          <div className="features-grid-4">
-            {/* Card 1: Station Management */}
-            <div className="feature-card-clean" onClick={() => scrollToSection('how-it-works')}>
-              <div className="feature-card-icon">
-                <Monitor size={24} color="#C62828" />
-              </div>
-              <h3 className="feature-card-title">Station Management</h3>
-              <p className="feature-card-desc">
-                Monitor station availability, status, type, and hourly rates in real time across PC and console setups.
-              </p>
-              <div className="feature-card-footer">
-                <span>Explore Workflow</span>
-                <ChevronRight size={14} />
-              </div>
-            </div>
-
-            {/* Card 2: Reservations & Sessions */}
-            <div className="feature-card-clean" onClick={() => scrollToSection('how-it-works')}>
-              <div className="feature-card-icon">
-                <CalendarCheck size={24} color="#C62828" />
-              </div>
-              <h3 className="feature-card-title">Reservations & Sessions</h3>
-              <p className="feature-card-desc">
-                Book stations in advance, record session start and end events, and calculate session duration accurately.
-              </p>
-              <div className="feature-card-footer">
-                <span>Explore Workflow</span>
-                <ChevronRight size={14} />
-              </div>
-            </div>
-
-            {/* Card 3: Café Orders & Inventory */}
-            <div className="feature-card-clean" onClick={() => scrollToSection('how-it-works')}>
-              <div className="feature-card-icon">
-                <Coffee size={24} color="#C62828" />
-              </div>
-              <h3 className="feature-card-title">Café Orders & Inventory</h3>
-              <p className="feature-card-desc">
-                Attach food and drink orders to active customer sessions while maintaining automatic stock reduction and reorder alerts.
-              </p>
-              <div className="feature-card-footer">
-                <span>Explore Workflow</span>
-                <ChevronRight size={14} />
-              </div>
-            </div>
-
-            {/* Card 4: Billing & Reports */}
-            <div className="feature-card-clean" onClick={() => scrollToSection('how-it-works')}>
-              <div className="feature-card-icon">
-                <FileBarChart size={24} color="#C62828" />
-              </div>
-              <h3 className="feature-card-title">Billing & Reports</h3>
-              <p className="feature-card-desc">
-                Combine gaming and café charges into single itemized bills with payment recording and managerial analytics.
-              </p>
-              <div className="feature-card-footer">
-                <span>Explore Workflow</span>
-                <ChevronRight size={14} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          4. HOW IT WORKS SECTION
-          ========================================================================= */}
-      <section id="how-it-works" className="landing-section">
-        <div className="landing-container">
-          <div className="section-header-centered">
-            <div className="section-pill">SYSTEM WORKFLOW</div>
-            <h2 className="section-title">How It Works</h2>
-            <p className="section-subtitle">
-              A straightforward 5-step operational lifecycle based strictly on the SRS specification.
-            </p>
-          </div>
-
-          <div className="workflow-steps-wrapper">
-            {/* Visual connecting red line */}
-            <div className="workflow-connecting-line" />
-
-            <div className="workflow-steps-grid">
-              {/* Step 1 */}
-              <div className="workflow-step-item">
-                <div className="workflow-step-circle">
-                  <span>01</span>
-                </div>
-                <h4 className="workflow-step-title">Customer Books</h4>
-                <p className="workflow-step-desc">
-                  Customer reserves an available PC or console station for a designated date and time window.
-                </p>
-              </div>
-
-              {/* Step 2 */}
-              <div className="workflow-step-item">
-                <div className="workflow-step-circle">
-                  <span>02</span>
-                </div>
-                <h4 className="workflow-step-title">Session Starts</h4>
-                <p className="workflow-step-desc">
-                  Receptionist verifies booking, starts the session timer, and automatically flags the station as occupied.
-                </p>
-              </div>
-
-              {/* Step 3 */}
-              <div className="workflow-step-item">
-                <div className="workflow-step-circle">
-                  <span>03</span>
-                </div>
-                <h4 className="workflow-step-title">Café Order</h4>
-                <p className="workflow-step-desc">
-                  Café staff records food and beverage orders attached directly to the customer's ongoing session.
-                </p>
-              </div>
-
-              {/* Step 4 */}
-              <div className="workflow-step-item">
-                <div className="workflow-step-circle">
-                  <span>04</span>
-                </div>
-                <h4 className="workflow-step-title">Billing</h4>
-                <p className="workflow-step-desc">
-                  Session ends, calculating exact duration charges and combining them with café orders into an itemized bill.
-                </p>
-              </div>
-
-              {/* Step 5 */}
-              <div className="workflow-step-item">
-                <div className="workflow-step-circle">
-                  <span>05</span>
-                </div>
-                <h4 className="workflow-step-title">Payment & Reports</h4>
-                <p className="workflow-step-desc">
-                  Payment is collected via Cash, Card, or UPI, and all transactional data updates management reports.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          5. ROLES SECTION
+          3. ROLES SECTION (CONSOLIDATED INTO 3 STREAMLINED ROLES)
+          Café Staff & Receptionist Combined into One Centralized Section
           ========================================================================= */}
       <section id="roles" className="landing-section bg-section-subtle">
         <div className="landing-container">
           <div className="section-header-centered">
-            <div className="section-pill">ROLE-BASED ACCESS CONTROL</div>
-            <h2 className="section-title">One System. Four Roles.</h2>
+            <div className="section-pill">UNIFIED ACCESS CONTROL</div>
+            <h2 className="section-title">Three Roles. Zero Friction.</h2>
             <p className="section-subtitle">
-              Each user category operates within dedicated, permissions-controlled interfaces to ensure system integrity.
+              We have merged front desk reception and café floor operations into a single staff command center,
+              giving your team unmatched speed and complete situational awareness.
             </p>
           </div>
 
-          <div className="roles-grid-4">
-            {/* Customer */}
-            <div className="role-card-clean">
-              <div className="role-badge-tag">Customer</div>
-              <h3 className="role-card-title">Gamer & Visitor</h3>
+          <div className="roles-grid-3">
+            {/* Role 1: Customer */}
+            <div className="role-card-elevated">
+              <div className="role-card-top">
+                <div className="role-badge-tag">Gamer Portal</div>
+                <div className="role-card-icon-wrap">
+                  <Gamepad2 size={24} color="#C62828" />
+                </div>
+              </div>
+              <h3 className="role-card-title">Customer & Gamer</h3>
               <p className="role-card-desc">
-                Engages directly with gaming stations and places food/drink orders during gameplay.
+                Intuitive self-service portal for real-time station availability, advance seat reservations,
+                and direct in-session café ordering.
               </p>
               <ul className="role-duties-list">
-                <li>View station availability in real time</li>
-                <li>Make reservations for PC & console setups</li>
-                <li>Place café food & beverage orders</li>
-                <li>Review itemized bills and receipts</li>
+                <li>Check real-time station availability across PC & Console rigs</li>
+                <li>Make instant advance reservations for preferred time slots</li>
+                <li>Order refreshments delivered directly to their gaming station</li>
+                <li>Monitor live session duration and access itemized digital receipts</li>
               </ul>
+              <div className="role-card-bottom-scope">
+                <span>Role Scope:</span> Self-Service Gamer Interface
+              </div>
             </div>
 
-            {/* Receptionist */}
-            <div className="role-card-clean">
-              <div className="role-badge-tag">Receptionist</div>
-              <h3 className="role-card-title">Front Desk Operations</h3>
+            {/* Role 2: Café Staff & Receptionist (MERGED CENTERPIECE) */}
+            <div className="role-card-merged">
+              <div className="merged-featured-badge">
+                <Sparkles size={13} color="#FFFFFF" />
+                <span>MERGED OPERATIONS DESK</span>
+              </div>
+              <div className="role-card-top">
+                <div className="role-badge-tag" style={{ background: '#FFF5F5', borderColor: '#FFCDD2' }}>
+                  Front Desk + Café Floor
+                </div>
+                <div className="role-card-icon-wrap merged-icon-box">
+                  <Users size={20} color="#FFFFFF" />
+                  <span style={{ color: '#FFFFFF', fontSize: '0.85rem' }}>+</span>
+                  <Coffee size={20} color="#FFFFFF" />
+                </div>
+              </div>
+              <h3 className="role-card-title" style={{ fontSize: '1.35rem', color: '#171717' }}>
+                Café Staff & Receptionist
+              </h3>
               <p className="role-card-desc">
-                Manages walk-ins, station bookings, live player sessions, and final payment collection.
+                A single unified terminal combining front-desk check-ins, live hardware session timers,
+                kitchen food & beverage orders, inventory tracking, and final cashier billing.
               </p>
               <ul className="role-duties-list">
-                <li>Manage customer profile records</li>
-                <li>Process reservations and check station status</li>
-                <li>Start and end player gaming sessions</li>
-                <li>Handle final billing and payment collection</li>
+                <li>
+                  <strong>Front-Desk Check-In:</strong> Rapid customer lookup and instant station assignment
+                </li>
+                <li>
+                  <strong>Session Master:</strong> Start, monitor, and end gaming sessions with auto-tariff billing
+                </li>
+                <li>
+                  <strong>In-Seat Café Orders:</strong> Receive and dispatch snacks attached directly to station IDs
+                </li>
+                <li>
+                  <strong>Inventory Oversight:</strong> Real-time ingredient deductions and stock reorder warnings
+                </li>
+                <li>
+                  <strong>Consolidated Checkout:</strong> Settle gaming duration + food orders on a single invoice
+                </li>
               </ul>
+              <div className="role-card-bottom-scope" style={{ borderColor: '#FFCDD2', background: '#FFF5F5', color: '#B71C1C' }}>
+                <span>Role Scope:</span> Front Desk • Session Timers • Kitchen • Cashier
+              </div>
             </div>
 
-            {/* Café Staff */}
-            <div className="role-card-clean">
-              <div className="role-badge-tag">Café Staff</div>
-              <h3 className="role-card-title">Café & Kitchen Floor</h3>
-              <p className="role-card-desc">
-                Prepares refreshments and maintains café inventory and stock threshold oversight.
-              </p>
-              <ul className="role-duties-list">
-                <li>Process food and drink orders for active sessions</li>
-                <li>Update inventory quantities upon stock delivery</li>
-                <li>Monitor items approaching reorder thresholds</li>
-                <li>Ensure accurate stock consumption logging</li>
-              </ul>
-            </div>
-
-            {/* Administrator */}
-            <div className="role-card-clean">
-              <div className="role-badge-tag">Administrator</div>
+            {/* Role 3: Administrator */}
+            <div className="role-card-elevated">
+              <div className="role-card-top">
+                <div className="role-badge-tag">System Governance</div>
+                <div className="role-card-icon-wrap">
+                  <ShieldCheck size={24} color="#C62828" />
+                </div>
+              </div>
               <h3 className="role-card-title">System Administrator</h3>
               <p className="role-card-desc">
-                Oversees station infrastructure, staff credentials, catalog pricing, and business reports.
+                High-level governance over gaming hardware setups, employee credentials, hourly pricing structures,
+                master inventory, and financial reporting.
               </p>
               <ul className="role-duties-list">
-                <li>Configure gaming stations and hourly rates</li>
-                <li>Manage employee and user account permissions</li>
-                <li>Maintain master inventory records</li>
-                <li>Generate revenue, usage, and stock reports</li>
+                <li>Configure gaming station specs, hardware types, and hourly rates</li>
+                <li>Manage employee accounts, credentials, and access permissions</li>
+                <li>Oversee master café catalog, procurement, and stock levels</li>
+                <li>Generate real-time revenue analytics, station utilization, and F&B reports</li>
               </ul>
+              <div className="role-card-bottom-scope">
+                <span>Role Scope:</span> Infrastructure • Security • Business Analytics
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          6. ABOUT SECTION
+          4. ABOUT SECTION & SYSTEM ACCESS CTA (NO FOOTER BELOW)
           ========================================================================= */}
       <section id="about" className="landing-section">
         <div className="landing-container">
@@ -550,93 +490,68 @@ export default function LandingPage({ onLogin }) {
             <div className="about-content">
               <div className="section-pill" style={{ margin: '0 0 1rem 0' }}>ABOUT GAMEVERSE</div>
               <h2 className="section-title" style={{ textAlign: 'left', marginBottom: '1.25rem' }}>
-                Built to Simplify Gaming Café Operations
+                Engineered to Unify Fragmented Café Operations
               </h2>
               <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, fontSize: '0.975rem', marginBottom: '1rem' }}>
-                GameVerse is a centralized management system designed to replace paper-based and manually maintained café logs. It connects customer handling, station reservations, session tracking, café orders, billing, inventory, and reporting into one consistent platform.
+                Traditional gaming cafés lose substantial revenue through disconnected paper registers,
+                untracked food chits, and delayed billing reconciliations. GameVerse solves this by merging
+                front-desk reception with café floor operations into a synchronized, single-screen command system.
               </p>
               <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, fontSize: '0.975rem', marginBottom: '1.75rem' }}>
-                Conforming strictly to the Software Requirements Specification (SRS V1.0), GameVerse ensures that gaming café operators can optimize their workflows, eliminate booking conflicts, and ensure accurate financial reconciliation.
+                Conforming to rigorous operational specifications, GameVerse ensures zero booking conflicts,
+                accurate per-minute duration accounting, live inventory depletion, and one-click consolidated checkout.
               </p>
 
+              {/* Key Architectural Highlights */}
               <div className="about-stats-row">
                 <div className="about-stat-item">
-                  <div className="about-stat-num">100%</div>
-                  <div className="about-stat-lbl">SRS Scope Compliant</div>
+                  <div className="about-stat-num">3 Roles</div>
+                  <div className="about-stat-lbl">Unified Access Model</div>
                 </div>
                 <div className="about-stat-item">
-                  <div className="about-stat-num">4 Roles</div>
-                  <div className="about-stat-lbl">Role-Based Access</div>
+                  <div className="about-stat-num">100% Merged</div>
+                  <div className="about-stat-lbl">Reception Desk & Café Floor</div>
                 </div>
                 <div className="about-stat-item">
                   <div className="about-stat-num">Real-Time</div>
-                  <div className="about-stat-lbl">State Synchronization</div>
+                  <div className="about-stat-lbl">Cross-Terminal State Sync</div>
                 </div>
+                <div className="about-stat-item">
+                  <div className="about-stat-num">Single Bill</div>
+                  <div className="about-stat-lbl">Consolidated Gaming + F&B</div>
+                </div>
+              </div>
+
+              {/* Integrated Call-To-Action Banner */}
+              <div className="about-cta-banner">
+                <div>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#171717', marginBottom: '0.35rem' }}>
+                    Ready to Experience GameVerse?
+                  </h3>
+                  <p style={{ fontSize: '0.875rem', color: '#666666', margin: 0 }}>
+                    Access Customer, Merged Staff (Café & Reception), or Administrator portals now.
+                  </p>
+                </div>
+                <button
+                  className="btn btn-primary"
+                  onClick={onLogin}
+                  style={{
+                    padding: '0.75rem 1.75rem',
+                    fontWeight: 700,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    boxShadow: '0 4px 16px rgba(198, 40, 40, 0.25)'
+                  }}
+                >
+                  <span>Enter System Portals</span>
+                  <ArrowRight size={16} />
+                </button>
               </div>
             </div>
           </div>
         </div>
       </section>
-
-      {/* =========================================================================
-          7. FOOTER
-          ========================================================================= */}
-      <footer className="landing-footer-clean">
-        <div className="landing-container">
-          <div className="footer-top-row">
-            <div className="footer-brand-info">
-              <div className="landing-brand" style={{ marginBottom: '0.65rem' }}>
-                <div className="landing-logo-badge">
-                  <Gamepad2 size={20} color="#FFFFFF" />
-                </div>
-                <div>
-                  <div className="landing-brand-name">GameVerse</div>
-                  <div className="landing-brand-tagline">Gaming Café Management System</div>
-                </div>
-              </div>
-              <p style={{ fontSize: '0.8125rem', color: '#888888', maxWidth: '380px', lineHeight: 1.6 }}>
-                A centralized operational system for gaming station management, café food orders, session timing, itemized billing, and management reports.
-              </p>
-            </div>
-
-            <div className="footer-nav-links">
-              <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#171717', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-                Navigation
-              </div>
-              <button onClick={() => scrollToSection('home')} className="footer-link-btn">Home</button>
-              <button onClick={() => scrollToSection('features')} className="footer-link-btn">Features</button>
-              <button onClick={() => scrollToSection('how-it-works')} className="footer-link-btn">How It Works</button>
-              <button onClick={() => scrollToSection('roles')} className="footer-link-btn">Roles</button>
-              <button onClick={() => scrollToSection('about')} className="footer-link-btn">About</button>
-            </div>
-
-            <div className="footer-action-col">
-              <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#171717', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-                Portal Authentication
-              </div>
-              <button
-                className="btn btn-primary btn-sm"
-                onClick={onLogin}
-                style={{ width: '100%', padding: '0.6rem 1rem' }}
-              >
-                Access System Portals
-              </button>
-              <div style={{ fontSize: '0.75rem', color: '#888888', marginTop: '0.5rem' }}>
-                Customer • Staff • Administrator
-              </div>
-            </div>
-          </div>
-
-          <div className="footer-bottom-row">
-            <div style={{ fontSize: '0.75rem', color: '#888888' }}>
-              © {new Date().getFullYear()} GameVerse Management System. Academic & Operational Lab Prototype.
-            </div>
-            <div style={{ fontSize: '0.75rem', color: '#888888' }}>
-              Windows 10/11 Local Environment • SRS V1.0 Compliant
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

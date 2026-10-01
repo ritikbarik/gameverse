@@ -11,16 +11,31 @@ export default function UserManagement() {
   const [editingUser, setEditingUser] = useState(null);
 
   const [name, setName] = useState('');
-  const [role, setRole] = useState('Receptionist');
+  const [role, setRole] = useState('Staff');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
 
-  const roles = ['Administrator', 'Receptionist', 'Café Staff', 'Customer'];
+  const displayRole = (r) => {
+    if (r === 'Staff' || r === 'Receptionist' || r === 'Café Staff') return 'Café Staff & Receptionist';
+    return r;
+  };
+
+  const roles = [
+    { id: 'Customer', label: 'Customer' },
+    { id: 'Staff', label: 'Café Staff & Receptionist' },
+    { id: 'Administrator', label: 'Administrator' }
+  ];
 
   const filteredUsers = users.filter(u => {
-    if (roleFilter !== 'ALL' && u.role !== roleFilter) return false;
+    if (roleFilter !== 'ALL') {
+      if (roleFilter === 'Staff') {
+        if (u.role !== 'Staff' && u.role !== 'Receptionist' && u.role !== 'Café Staff') return false;
+      } else if (u.role !== roleFilter) {
+        return false;
+      }
+    }
     if (searchTerm && !u.name.toLowerCase().includes(searchTerm.toLowerCase()) && !u.username.toLowerCase().includes(searchTerm.toLowerCase())) return false;
     return true;
   });
@@ -28,7 +43,7 @@ export default function UserManagement() {
   const handleOpenAdd = () => {
     setEditingUser(null);
     setName('');
-    setRole('Receptionist');
+    setRole('Staff');
     setUsername('');
     setPassword('staff123');
     setPhone('');
@@ -104,11 +119,15 @@ export default function UserManagement() {
         </button>
         {roles.map(r => (
           <button
-            key={r}
-            className={`filter-chip ${roleFilter === r ? 'active' : ''}`}
-            onClick={() => setRoleFilter(r)}
+            key={r.id}
+            className={`filter-chip ${roleFilter === r.id ? 'active' : ''}`}
+            onClick={() => setRoleFilter(r.id)}
           >
-            {r} ({users.filter(u => u.role === r).length})
+            {r.label} ({
+              r.id === 'Staff'
+                ? users.filter(u => u.role === 'Staff' || u.role === 'Receptionist' || u.role === 'Café Staff').length
+                : users.filter(u => u.role === r.id).length
+            })
           </button>
         ))}
 
@@ -146,7 +165,7 @@ export default function UserManagement() {
                 <td><strong style={{ color: 'var(--text-main)' }}>{user.name}</strong></td>
                 <td>
                   <span className="badge badge-active">
-                    <Shield size={10} /> {user.role}
+                    <Shield size={10} /> {displayRole(user.role)}
                   </span>
                 </td>
                 <td>{user.username}</td>
@@ -194,15 +213,14 @@ export default function UserManagement() {
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label className="form-label">Primary Role (SRS)</label>
+                    <label className="form-label">Assigned Role</label>
                     <select
                       className="form-control"
-                      value={role}
+                      value={role === 'Receptionist' || role === 'Café Staff' ? 'Staff' : role}
                       onChange={e => setRole(e.target.value)}
                     >
                       <option value="Customer">Customer</option>
-                      <option value="Receptionist">Receptionist</option>
-                      <option value="Café Staff">Café Staff</option>
+                      <option value="Staff">Café Staff & Receptionist</option>
                       <option value="Administrator">Administrator</option>
                     </select>
                   </div>

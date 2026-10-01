@@ -117,7 +117,11 @@ export default function Sidebar({ activeScreen, setActiveScreen }) {
           </div>
           <div className="user-info">
             <div className="user-name">{currentUser.name}</div>
-            <span className="user-role-tag">{currentUser.role}</span>
+            <span className="user-role-tag">
+              {role === 'Staff' || role === 'Receptionist' || role === 'Café Staff'
+                ? 'Café Staff & Receptionist'
+                : currentUser.role}
+            </span>
           </div>
         </div>
       </div>

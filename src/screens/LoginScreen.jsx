@@ -44,13 +44,13 @@ export default function LoginScreen({ onLoginSuccess, onBackToLanding }) {
     },
     {
       id: 'staff',
-      title: 'Staff Operations Portal',
+      title: 'Café Staff & Receptionist',
       role: 'Staff',
-      tag: 'Reception Desk & Café Counter',
+      tag: 'Merged Operations Desk',
       tagColor: '#B71C1C',
       tagBg: '#FFF5F5',
       icon: Users,
-      desc: 'Consolidated operations for front desk and café floor: customer check-ins, reservations, active session tracking, food orders, and billing.',
+      desc: 'Merged operations for front desk and café floor: customer check-ins, reservations, active session tracking, food orders, and billing.',
       features: ['Front Desk Check-in', 'Start/End Sessions', 'Café Orders', 'Payment Processing', 'Stock Alerts'],
       defaultUser: users.find(u => u.role === 'Staff' || u.role === 'Receptionist') || {
         username: 'staff',

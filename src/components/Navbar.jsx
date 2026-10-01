@@ -13,7 +13,7 @@ export default function Navbar({ onLogout }) {
   const portalTitle = isCustomer
     ? 'CUSTOMER PORTAL'
     : isStaff
-    ? 'STAFF OPERATIONS PORTAL'
+    ? 'CAFÉ STAFF & RECEPTIONIST PORTAL'
     : 'ADMINISTRATOR PORTAL';
 
   const portalBadgeColor = isCustomer
@@ -75,7 +75,7 @@ export default function Navbar({ onLogout }) {
               {currentUser.name}
             </div>
             <div style={{ fontSize: '0.6875rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
-              {currentUser.role} • {currentUser.user_id}
+              {isStaff ? 'Café Staff & Receptionist' : currentUser.role} • {currentUser.user_id}
             </div>
           </div>
         </div>
