@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../dark-landing.css';
 import {
   Gamepad2,
   Monitor,
@@ -14,7 +15,9 @@ import {
   Zap,
   Package,
   Layers,
-  ChevronRight
+  ChevronRight,
+  Flame,
+  Award
 } from 'lucide-react';
 
 export default function LandingPage({ onLogin }) {
@@ -45,13 +48,13 @@ export default function LandingPage({ onLogin }) {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [prefersReducedMotion]);
 
-  // Track scroll position for dynamic scroll parallax
+  // Track scroll position for dynamic scroll parallax and active nav
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
 
-      const sections = ['home', 'roles', 'about'];
-      const scrollPos = window.scrollY + 140;
+      const sections = ['home', 'hardware', 'experience', 'lifestyle', 'roles'];
+      const scrollPos = window.scrollY + 160;
 
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
@@ -77,63 +80,66 @@ export default function LandingPage({ onLogin }) {
   const sY = prefersReducedMotion ? 0 : scrollY;
 
   return (
-    <div className="landing-page-root">
+    <div className="dark-landing-root">
       {/* =========================================================================
-          1. STICKY NAVBAR (Professional Blue & White Frosted Glass)
+          1. STICKY NAVBAR: Dark Translucent Studio Glass with Coca-Cola Red Accent
           ========================================================================= */}
-      <header className="landing-navbar-sticky">
-        <div className="landing-navbar-container">
-          {/* Left: Brand Logo */}
+      <header className="dark-navbar-sticky">
+        <div className="dark-navbar-container">
+          {/* Left: Brand Monogram */}
           <div
-            className="landing-brand"
+            className="dark-brand"
             onClick={() => scrollToSection('home')}
             style={{ cursor: 'pointer' }}
           >
-            <div className="landing-logo-badge">
-              <Gamepad2 size={22} color="#FFFFFF" />
+            <div className="dark-logo-badge">
+              <Gamepad2 size={20} color="#FFFFFF" />
             </div>
             <div>
-              <div className="landing-brand-name">GameVerse</div>
-              <div className="landing-brand-tagline">Centralized Gaming Platform</div>
+              <div className="dark-brand-name">GameVerse</div>
+              <div className="dark-brand-tagline">Gaming Operations Platform</div>
             </div>
           </div>
 
           {/* Center Navigation Links */}
-          <nav className="landing-nav-menu">
+          <nav className="dark-nav-menu">
             <button
               onClick={() => scrollToSection('home')}
-              className={`landing-nav-link ${activeNav === 'home' ? 'active' : ''}`}
+              className={`dark-nav-link ${activeNav === 'home' ? 'active' : ''}`}
             >
               Home
             </button>
             <button
-              onClick={() => scrollToSection('roles')}
-              className={`landing-nav-link ${activeNav === 'roles' ? 'active' : ''}`}
+              onClick={() => scrollToSection('hardware')}
+              className={`dark-nav-link ${activeNav === 'hardware' ? 'active' : ''}`}
             >
-              Unified Roles
+              Hardware
             </button>
             <button
-              onClick={() => scrollToSection('about')}
-              className={`landing-nav-link ${activeNav === 'about' ? 'active' : ''}`}
+              onClick={() => scrollToSection('experience')}
+              className={`dark-nav-link ${activeNav === 'experience' ? 'active' : ''}`}
             >
-              About
+              Experience
+            </button>
+            <button
+              onClick={() => scrollToSection('lifestyle')}
+              className={`dark-nav-link ${activeNav === 'lifestyle' ? 'active' : ''}`}
+            >
+              Lifestyle
+            </button>
+            <button
+              onClick={() => scrollToSection('roles')}
+              className={`dark-nav-link ${activeNav === 'roles' ? 'active' : ''}`}
+            >
+              Unified Roles
             </button>
           </nav>
 
           {/* Right Action: Launch System Portal */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
             <button
-              className="btn btn-primary"
+              className="dark-btn-primary"
               onClick={onLogin}
-              style={{
-                padding: '0.55rem 1.35rem',
-                fontSize: '0.875rem',
-                fontWeight: 700,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.45rem',
-                boxShadow: '0 4px 14px rgba(37, 99, 235, 0.28)'
-              }}
             >
               <span>Launch Portal</span>
               <ArrowRight size={15} />
@@ -143,327 +149,256 @@ export default function LandingPage({ onLogin }) {
       </header>
 
       {/* =========================================================================
-          2. OPTIMIZED HERO SECTION: GAMING CONSOLE & CHILLED COKE CAN SHOWCASE
+          SCENE 01 — HERO: Black Gaming Console × Realistic Red Coca-Cola Can
           ========================================================================= */}
-      <section id="home" className="hero-section-wrapper">
-        {/* Ambient Parallax Gradient Background Shapes */}
+      <section id="home" className="dark-hero-section">
+        {/* Ambient Dark Studio Backlight & Soft Red Glow */}
         <div
-          className="hero-bg-shapes"
+          className="dark-hero-ambient"
           style={{
-            transform: `translate3d(${pX * -12}px, ${pY * -10 + sY * -0.08}px, 0)`
+            transform: `translate3d(${pX * -15}px, ${pY * -12 + sY * -0.06}px, 0)`
           }}
         >
-          <div className="subtle-shape shape-circle-1" />
-          <div className="subtle-shape shape-circle-2" />
-          <div className="hero-glow-beam" />
+          <div className="ambient-red-halo halo-main" />
+          <div className="ambient-red-halo halo-subtle" />
         </div>
 
-        <div className="hero-content-container">
-          {/* Left Column: Typography, Value Proposition & Actions */}
+        <div className="dark-hero-container">
+          {/* Left Column: Bold Minimal Typography & Value Proposition */}
           <div
-            className="hero-text-col"
+            className="dark-hero-text-col"
             style={{
-              transform: `translate3d(0, ${sY * 0.04}px, 0)`
+              transform: `translate3d(0, ${sY * 0.03}px, 0)`
             }}
           >
-            <div className="hero-kicker-pill">
-              <span className="hero-kicker-dot" />
-              <span>UNIFIED ARCHITECTURE • MERGED OPERATIONS</span>
+            <div className="dark-eyebrow-pill">
+              <span className="dark-kicker-dot" />
+              <span>PLAY WITHOUT LIMITS • UNIFIED OPERATIONS</span>
             </div>
 
-            <h1 className="hero-main-title">
-              Next-Gen Gaming.
+            <h1 className="dark-hero-title">
+              PLAY WITHOUT
               <br />
-              Chilled Refreshments.
+              LIMITS.
               <br />
-              <span className="hero-title-accent">One Unified Platform.</span>
+              <span className="dark-title-accent">Next-Gen Gaming & Café.</span>
             </h1>
 
-            <p className="hero-description">
-              Power your gaming café with instant console & PC rig allocation, in-seat café orders
-              featuring ice-cold Coke & snacks, live hardware session timers, and automated single-ticket checkout.
+            <p className="dark-hero-desc">
+              A cinematic operations platform designed for modern gaming cafés.
+              Seamlessly unify next-gen console and PC rigs, in-seat Coca-Cola
+              refreshment service, real-time hardware timers, and single-ticket checkout.
             </p>
 
-            <div style={{ display: 'flex', gap: '0.85rem', flexWrap: 'wrap', marginBottom: '1.75rem' }}>
+            {/* CTAs */}
+            <div className="dark-hero-actions">
               <button
-                className="btn btn-primary"
+                className="dark-btn-primary dark-btn-hero"
                 onClick={onLogin}
-                style={{
-                  padding: '0.8rem 1.75rem',
-                  fontSize: '0.95rem',
-                  fontWeight: 700,
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.55rem',
-                  boxShadow: '0 8px 22px rgba(37, 99, 235, 0.28)'
-                }}
               >
                 <span>Enter System Portal</span>
-                <ArrowRight size={17} />
+                <ArrowRight size={16} />
               </button>
 
               <button
-                className="btn btn-secondary"
-                onClick={() => scrollToSection('roles')}
-                style={{
-                  padding: '0.8rem 1.5rem',
-                  fontSize: '0.95rem',
-                  fontWeight: 700,
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.55rem'
-                }}
+                className="dark-btn-secondary dark-btn-hero"
+                onClick={() => scrollToSection('hardware')}
               >
-                <span>Explore Unified Roles</span>
-                <ChevronDown size={17} color="var(--blue-primary)" />
+                <span>Explore Experience</span>
+                <ChevronDown size={16} color="#A1A1A1" />
               </button>
             </div>
 
-            {/* Feature Highlight Chips */}
-            <div className="hero-highlight-chips">
-              <div className="hero-chip">
-                <Gamepad2 size={16} color="var(--blue-primary)" />
-                <span>Next-Gen Console & PC Rigs</span>
+            {/* Subtle Feature Indicator Chips */}
+            <div className="dark-feature-chips">
+              <div className="dark-chip">
+                <span className="chip-indicator" />
+                <span>Onyx Next-Gen Rigs</span>
               </div>
-              <div className="hero-chip">
-                <Coffee size={16} color="var(--blue-primary)" />
-                <span>In-Seat Coke & Food Delivery</span>
+              <div className="dark-chip">
+                <span className="chip-indicator" />
+                <span>In-Seat Refreshments</span>
               </div>
-              <div className="hero-chip">
-                <Users size={16} color="var(--blue-primary)" />
-                <span>Front Desk & Café Floor Merged</span>
-              </div>
-              <div className="hero-chip">
-                <Receipt size={16} color="var(--blue-primary)" />
-                <span>Consolidated Itemized Billing</span>
+              <div className="dark-chip">
+                <span className="chip-indicator" />
+                <span>Consolidated Billing</span>
               </div>
             </div>
           </div>
 
-          {/* Right Column: High-Fidelity Gaming Console & Coke Can 3D Stage */}
-          <div className="hero-visual-col">
+          {/* Right Column: Dark Studio Console & Red Coke Can Presentation */}
+          <div className="dark-hero-visual-col">
             <div
-              className="hero-stage-container"
+              className="dark-stage-wrap"
               style={{
-                transform: `perspective(1000px) rotateY(${pX * 4}deg) rotateX(${-pY * 4}deg) translate3d(0, ${sY * -0.05}px, 0)`
+                transform: `perspective(1200px) rotateY(${pX * 4.5}deg) rotateX(${-pY * 4.5}deg) translate3d(0, ${sY * -0.04}px, 0)`
               }}
             >
-              {/* Backlight Ambient Glow Ring */}
-              <div className="stage-ambient-glow" />
+              {/* Backlight Studio Glow */}
+              <div className="dark-stage-glow" />
 
-              {/* Master Showcase Card with Console & Coke Can Image */}
-              <div className="stage-image-card">
+              {/* Master Studio Presentation Card */}
+              <div className="dark-stage-card">
                 <img
-                  src="/hero-gaming-coke.jpg"
-                  alt="GameVerse Next-Gen Gaming Console and Chilled Coca-Cola Setup"
-                  className="stage-visual-img"
+                  src="/hero-console-coke-dark.jpg"
+                  alt="GameVerse Next-Gen Onyx Gaming Console with Chilled Coca-Cola in Dark Studio"
+                  className="dark-stage-img"
                   loading="eager"
                 />
 
-                {/* Glass Light Sheen Overlay */}
+                {/* Glass Light Sheen */}
                 <div
-                  className="stage-glass-sheen"
+                  className="dark-stage-sheen"
                   style={{
-                    transform: `translate3d(${pX * 25}px, ${pY * 20}px, 0)`
+                    transform: `translate3d(${pX * 20}px, ${pY * 18}px, 0)`
                   }}
                 />
 
-                {/* Embedded HUD Badge: Live Gaming Console Status (Top-Left) */}
-                <div className="hud-badge hud-badge-top-left">
-                  <span className="live-pulse-dot" />
+                {/* HUD Overlay: Console Station Status (Top Left) */}
+                <div className="dark-hud-badge dark-hud-top-left">
+                  <span className="hud-red-pulse" />
                   <div>
-                    <div className="hud-title">Console Station S-03</div>
-                    <div className="hud-sub">Aether-X • 4K 120FPS Active</div>
+                    <div className="dark-hud-title">Station S-03 • Onyx Console</div>
+                    <div className="dark-hud-sub">4K @ 120 FPS • HDR Active</div>
                   </div>
                 </div>
 
-                {/* Embedded HUD Badge: Chilled Coke Order (Top-Right) */}
-                <div className="hud-badge hud-badge-top-right">
-                  <div className="hud-ice-indicator">🥤</div>
+                {/* HUD Overlay: In-Seat Coca-Cola Status (Top Right) */}
+                <div className="dark-hud-badge dark-hud-top-right">
+                  <div className="coke-dot">●</div>
                   <div>
-                    <div className="hud-title">Chilled Coca-Cola</div>
-                    <div className="hud-sub">Delivered In-Seat • Ice Cold</div>
+                    <div className="dark-hud-title">Coca-Cola Classic (330ml)</div>
+                    <div className="dark-hud-sub">Chilled • Served In-Seat</div>
                   </div>
                 </div>
 
                 {/* Bottom Consolidated Session Bill HUD Overlay */}
-                <div className="stage-bottom-bill-banner">
-                  <div className="stage-bill-content">
-                    <div className="stage-bill-left">
-                      <div className="stage-bill-tag">
-                        <Receipt size={13} color="var(--blue-primary)" />
+                <div className="dark-stage-bill-banner">
+                  <div className="dark-bill-content">
+                    <div className="dark-bill-left">
+                      <div className="dark-bill-tag">
+                        <Receipt size={12} color="#E50914" />
                         <span>SYNCHRONIZED TICKET #GV-842</span>
                       </div>
-                      <div className="stage-bill-breakdown">
+                      <div className="dark-bill-breakdown">
                         <span>Console Session (01h 30m): ₹150</span>
-                        <span className="stage-bill-divider">•</span>
+                        <span className="dark-bill-sep">•</span>
                         <span>1x Chilled Coke + Nachos: ₹110</span>
                       </div>
                     </div>
-                    <div className="stage-bill-right">
-                      <div className="stage-total-label">Running Total</div>
-                      <div className="stage-total-val">₹260.00</div>
+                    <div className="dark-bill-right">
+                      <div className="dark-bill-label">Consolidated Total</div>
+                      <div className="dark-bill-val">₹260.00</div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Floating UI Metric 1: Merged Staff Desk */}
+              {/* Floating Orbit Card: Merged Operations Desk */}
               <div
-                className="floating-metric-card float-top-left"
+                className="dark-floating-pill float-left-card"
                 style={{
-                  transform: `translate3d(${pX * -14}px, ${pY * -10 + sY * 0.06}px, 0)`
+                  transform: `translate3d(${pX * -12}px, ${pY * -8 + sY * 0.04}px, 0)`
                 }}
               >
-                <div className="float-icon-box">
-                  <Users size={18} color="var(--blue-primary)" />
+                <div className="dark-float-icon">
+                  <Users size={16} color="#E50914" />
                 </div>
                 <div>
-                  <div className="float-val">Café Staff & Receptionist</div>
-                  <div className="float-lbl">Merged Operations Desk</div>
+                  <div className="dark-float-title">Café Staff & Receptionist</div>
+                  <div className="dark-float-desc">Merged Operations Desk</div>
                 </div>
               </div>
 
-              {/* Floating UI Metric 2: Live Hardware Sync */}
+              {/* Floating Orbit Card: Real-Time Hardware Synchronization */}
               <div
-                className="floating-metric-card float-mid-right"
+                className="dark-floating-pill float-right-card"
                 style={{
-                  transform: `translate3d(${pX * 14}px, ${pY * 12 + sY * -0.06}px, 0)`
+                  transform: `translate3d(${pX * 12}px, ${pY * 10 + sY * -0.04}px, 0)`
                 }}
               >
-                <div className="float-icon-box">
-                  <Monitor size={18} color="var(--blue-primary)" />
+                <div className="dark-float-icon">
+                  <Monitor size={16} color="#E50914" />
                 </div>
                 <div>
-                  <div className="float-val">12 Hardware Stations</div>
-                  <div className="float-lbl">PC & Console Live Sync</div>
+                  <div className="dark-float-title">12 Station Rig Matrix</div>
+                  <div className="dark-float-desc">Real-Time Sync • Zero Latency</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Scroll To Unified Roles */}
-        <div className="hero-scroll-explore-container">
+        {/* Subtle Scroll Down Prompt */}
+        <div className="dark-scroll-prompt">
           <button
-            className="hero-scroll-btn"
-            onClick={() => scrollToSection('roles')}
-            aria-label="Scroll to Unified Roles section"
+            onClick={() => scrollToSection('hardware')}
+            className="dark-scroll-btn"
+            aria-label="Scroll to Hardware Architecture"
           >
-            <span className="scroll-btn-text">Explore Unified Roles</span>
-            <div className="scroll-btn-arrow">
-              <ChevronDown size={18} color="var(--blue-primary)" />
-            </div>
+            <span className="dark-scroll-text">CONTINUE JOURNEY</span>
+            <ChevronDown size={14} color="#A1A1A1" />
           </button>
         </div>
       </section>
 
       {/* =========================================================================
-          3. ROLES SECTION (CONSOLIDATED INTO 3 STREAMLINED ROLES)
-          Café Staff & Receptionist Combined into One Centralized Section
+          SCENE 02 — HARDWARE ARCHITECTURE (CONSOLE FOCUS)
           ========================================================================= */}
-      <section id="roles" className="landing-section bg-section-subtle">
-        <div className="landing-container">
-          <div className="section-header-centered">
-            <div className="section-pill">UNIFIED ACCESS CONTROL</div>
-            <h2 className="section-title">Three Roles. Zero Friction.</h2>
-            <p className="section-subtitle">
-              We have merged front desk reception and café floor operations into a single staff command center,
-              giving your team unmatched speed and complete situational awareness.
+      <section id="hardware" className="dark-section">
+        <div className="dark-container">
+          <div className="dark-section-header">
+            <div className="dark-section-kicker">SCENE 02 • CONSOLE SPECIFICATIONS</div>
+            <h2 className="dark-section-title">Precision Hardware. Zero Latency.</h2>
+            <p className="dark-section-subtitle">
+              Built to manage ultra-high framerate esports rigs and next-gen console setups
+              with microsecond accuracy and automated tariff accounting.
             </p>
           </div>
 
-          <div className="roles-grid-3">
-            {/* Role 1: Customer */}
-            <div className="role-card-elevated">
-              <div className="role-card-top">
-                <div className="role-badge-tag">Gamer Portal</div>
-                <div className="role-card-icon-wrap">
-                  <Gamepad2 size={24} color="var(--blue-primary)" />
-                </div>
+          <div className="dark-grid-3">
+            <div className="dark-card">
+              <div className="dark-card-icon-box">
+                <Gamepad2 size={22} color="#E50914" />
               </div>
-              <h3 className="role-card-title">Customer & Gamer</h3>
-              <p className="role-card-desc">
-                Intuitive self-service portal for real-time station availability, advance seat reservations,
-                and direct in-session café & gaming gear ordering.
+              <h3 className="dark-card-title">4K @ 120Hz Rig Allocation</h3>
+              <p className="dark-card-body">
+                Instant station mapping for both PC battle-stations and Onyx next-gen console bays.
+                Track GPU temperature, active peripheral status, and station occupancy instantly.
               </p>
-              <ul className="role-duties-list">
-                <li>Check real-time station availability across PC & Console rigs</li>
-                <li>Make instant advance reservations for preferred time slots</li>
-                <li>Order refreshments and gaming accessories to their station</li>
-                <li>Monitor live session duration and access itemized digital receipts</li>
-              </ul>
-              <div className="role-card-bottom-scope">
-                <span>Role Scope:</span> Self-Service Gamer Interface
+              <div className="dark-card-metric">
+                <span className="metric-num">120 FPS</span>
+                <span className="metric-lbl">Ultra High-Refresh Sync</span>
               </div>
             </div>
 
-            {/* Role 2: Café Staff & Receptionist (MERGED CENTERPIECE) */}
-            <div className="role-card-merged">
-              <div className="merged-featured-badge">
-                <Sparkles size={13} color="#FFFFFF" />
-                <span>MERGED OPERATIONS DESK</span>
+            <div className="dark-card">
+              <div className="dark-card-icon-box">
+                <Clock size={22} color="#E50914" />
               </div>
-              <div className="role-card-top">
-                <div className="role-badge-tag" style={{ background: 'var(--blue-light)', borderColor: 'var(--blue-border)' }}>
-                  Front Desk + Café Floor
-                </div>
-                <div className="role-card-icon-wrap merged-icon-box">
-                  <Users size={20} color="#FFFFFF" />
-                  <span style={{ color: '#FFFFFF', fontSize: '0.85rem' }}>+</span>
-                  <Coffee size={20} color="#FFFFFF" />
-                </div>
-              </div>
-              <h3 className="role-card-title" style={{ fontSize: '1.35rem', color: 'var(--text-main)' }}>
-                Café Staff & Receptionist
-              </h3>
-              <p className="role-card-desc">
-                A single unified terminal combining front-desk check-ins, live hardware session timers,
-                kitchen food & beverage orders, gaming accessories sales, inventory tracking, and final cashier billing.
+              <h3 className="dark-card-title">Millisecond Session Timers</h3>
+              <p className="dark-card-body">
+                Automated tariffs calculate exact play duration without human intervention.
+                Sessions auto-pause or conclude upon timer expiry with instant hardware lockouts.
               </p>
-              <ul className="role-duties-list">
-                <li>
-                  <strong>Front-Desk Check-In:</strong> Rapid customer lookup and instant station assignment
-                </li>
-                <li>
-                  <strong>Session Master:</strong> Start, monitor, and end gaming sessions with auto-tariff billing
-                </li>
-                <li>
-                  <strong>Café & Gear Orders:</strong> Receive and dispatch snacks and accessories attached to station IDs
-                </li>
-                <li>
-                  <strong>Inventory Oversight:</strong> Real-time ingredient deductions and stock reorder warnings
-                </li>
-                <li>
-                  <strong>Consolidated Checkout:</strong> Settle gaming duration + orders on a single invoice
-                </li>
-              </ul>
-              <div className="role-card-bottom-scope" style={{ borderColor: 'var(--blue-border)', background: 'var(--blue-light)', color: 'var(--blue-dark)' }}>
-                <span>Role Scope:</span> Front Desk • Session Timers • Kitchen • Cashier
+              <div className="dark-card-metric">
+                <span className="metric-num">0.00s</span>
+                <span className="metric-lbl">Tariff Discrepancy Rate</span>
               </div>
             </div>
 
-            {/* Role 3: Administrator */}
-            <div className="role-card-elevated">
-              <div className="role-card-top">
-                <div className="role-badge-tag">System Governance</div>
-                <div className="role-card-icon-wrap">
-                  <ShieldCheck size={24} color="var(--blue-primary)" />
-                </div>
+            <div className="dark-card">
+              <div className="dark-card-icon-box">
+                <ShieldCheck size={22} color="#E50914" />
               </div>
-              <h3 className="role-card-title">System Administrator</h3>
-              <p className="role-card-desc">
-                High-level governance over gaming hardware setups, employee credentials, hourly pricing structures,
-                master inventory (café and accessories), and financial reporting.
+              <h3 className="dark-card-title">Zero Conflict Booking</h3>
+              <p className="dark-card-body">
+                Advance reservations with instantaneous seat locks. Gamers reserve preferred
+                console rigs or PC seats from the mobile portal with 100% schedule reliability.
               </p>
-              <ul className="role-duties-list">
-                <li>Configure gaming station specs, hardware types, and hourly rates</li>
-                <li>Manage employee accounts, credentials, and access permissions</li>
-                <li>Add & manage café items as well as gaming accessories</li>
-                <li>Generate real-time revenue analytics, station utilization, and F&B reports</li>
-              </ul>
-              <div className="role-card-bottom-scope">
-                <span>Role Scope:</span> Infrastructure • Security • Business Analytics
+              <div className="dark-card-metric">
+                <span className="metric-num">100%</span>
+                <span className="metric-lbl">Schedule Lock Integrity</span>
               </div>
             </div>
           </div>
@@ -471,72 +406,262 @@ export default function LandingPage({ onLogin }) {
       </section>
 
       {/* =========================================================================
-          4. ABOUT SECTION & SYSTEM ACCESS CTA (NO FOOTER BELOW)
+          SCENE 03 — UNIFIED GAMING EXPERIENCE (SYSTEM SYNCHRONIZATION)
           ========================================================================= */}
-      <section id="about" className="landing-section">
-        <div className="landing-container">
-          <div className="about-panel-clean">
-            <div className="about-content">
-              <div className="section-pill" style={{ margin: '0 0 1rem 0' }}>ABOUT GAMEVERSE</div>
-              <h2 className="section-title" style={{ textAlign: 'left', marginBottom: '1.25rem' }}>
-                Engineered to Unify Fragmented Café Operations
-              </h2>
-              <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, fontSize: '0.975rem', marginBottom: '1rem' }}>
-                Traditional gaming cafés lose substantial revenue through disconnected paper registers,
-                untracked food chits, and delayed billing reconciliations. GameVerse solves this by merging
-                front-desk reception with café floor operations into a synchronized, single-screen command system.
-              </p>
-              <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, fontSize: '0.975rem', marginBottom: '1.75rem' }}>
-                Conforming to rigorous operational specifications, GameVerse ensures zero booking conflicts,
-                accurate per-minute duration accounting, live inventory depletion, and one-click consolidated checkout.
-              </p>
+      <section id="experience" className="dark-section dark-section-alt">
+        <div className="dark-container">
+          <div className="dark-section-header">
+            <div className="dark-section-kicker">SCENE 03 • CENTRALIZED PLATFORM</div>
+            <h2 className="dark-section-title">One Screen. Complete Situational Awareness.</h2>
+            <p className="dark-section-subtitle">
+              Eliminate disconnected clipboards and lost slips. Front desk check-ins, gaming controllers,
+              and café staff operate inside one unified, lightning-fast command environment.
+            </p>
+          </div>
 
-              {/* Key Architectural Highlights */}
-              <div className="about-stats-row">
-                <div className="about-stat-item">
-                  <div className="about-stat-num">3 Roles</div>
-                  <div className="about-stat-lbl">Unified Access Model</div>
+          <div className="dark-experience-banner">
+            <div className="dark-exp-left">
+              <div className="dark-exp-badge">
+                <Sparkles size={14} color="#E50914" />
+                <span>MERGED OPERATIONS DESK</span>
+              </div>
+              <h3 className="dark-exp-heading">
+                Reception Desk & Café Floor Synchronized in Real Time
+              </h3>
+              <p className="dark-exp-text">
+                Every gaming rig communicates with the central desk. Staff view active player IDs,
+                running session tariffs, and pending food and beverage orders on a unified live canvas.
+              </p>
+              <ul className="dark-exp-points">
+                <li>
+                  <CheckCircle2 size={15} color="#E50914" />
+                  <span>Real-time cross-terminal state synchronization with zero delay</span>
+                </li>
+                <li>
+                  <CheckCircle2 size={15} color="#E50914" />
+                  <span>Automatic peripheral assignment and gaming gear tracking</span>
+                </li>
+                <li>
+                  <CheckCircle2 size={15} color="#E50914" />
+                  <span>Single-click session checkout aggregating gaming time and food orders</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="dark-exp-right">
+              <div className="dark-mock-hud">
+                <div className="mock-hud-header">
+                  <div className="mock-dot-live" />
+                  <span>SYSTEM OVERVIEW • 12 STATIONS ONLINE</span>
                 </div>
-                <div className="about-stat-item">
-                  <div className="about-stat-num">100% Merged</div>
-                  <div className="about-stat-lbl">Reception Desk & Café Floor</div>
+                <div className="mock-hud-stat-grid">
+                  <div className="mock-stat-tile">
+                    <div className="mock-stat-val">10 / 12</div>
+                    <div className="mock-stat-lbl">Active Rigs</div>
+                  </div>
+                  <div className="mock-stat-tile">
+                    <div className="mock-stat-val">₹4,850</div>
+                    <div className="mock-stat-lbl">Today's Gaming</div>
+                  </div>
+                  <div className="mock-stat-tile">
+                    <div className="mock-stat-val">₹2,320</div>
+                    <div className="mock-stat-lbl">Café & Refreshments</div>
+                  </div>
+                  <div className="mock-stat-tile">
+                    <div className="mock-stat-val">0</div>
+                    <div className="mock-stat-lbl">Pending Conflicts</div>
+                  </div>
                 </div>
-                <div className="about-stat-item">
-                  <div className="about-stat-num">Real-Time</div>
-                  <div className="about-stat-lbl">Cross-Terminal State Sync</div>
-                </div>
-                <div className="about-stat-item">
-                  <div className="about-stat-num">Single Bill</div>
-                  <div className="about-stat-lbl">Consolidated Gaming + F&B</div>
+                <div className="mock-hud-footer">
+                  <span>Front Desk + Kitchen + Cashier Merged</span>
+                  <span style={{ color: '#E50914', fontWeight: 700 }}>100% OPERATIONAL</span>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-              {/* Integrated Call-To-Action Banner */}
-              <div className="about-cta-banner">
-                <div>
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '0.35rem' }}>
-                    Ready to Experience GameVerse?
-                  </h3>
-                  <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', margin: 0 }}>
-                    Access Customer, Merged Staff (Café & Reception), or Administrator portals now.
-                  </p>
-                </div>
-                <button
-                  className="btn btn-primary"
-                  onClick={onLogin}
-                  style={{
-                    padding: '0.75rem 1.75rem',
-                    fontWeight: 700,
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    boxShadow: '0 4px 16px rgba(37, 99, 235, 0.25)'
-                  }}
-                >
-                  <span>Enter System Portals</span>
-                  <ArrowRight size={16} />
-                </button>
+      {/* =========================================================================
+          SCENE 04 — LIFESTYLE: Chilled Coca-Cola & In-Seat Culinary Refreshment
+          ========================================================================= */}
+      <section id="lifestyle" className="dark-section">
+        <div className="dark-container">
+          <div className="dark-section-header">
+            <div className="dark-section-kicker">SCENE 04 • REFRESHMENT & LIFESTYLE</div>
+            <h2 className="dark-section-title">In-Seat Refreshment. Coca-Cola Lifestyle.</h2>
+            <p className="dark-section-subtitle">
+              Elevate the gaming night with ice-cold beverages and fresh café bites
+              delivered directly to the gamer's station without pausing the match.
+            </p>
+          </div>
+
+          <div className="dark-grid-3">
+            <div className="dark-card">
+              <div className="dark-card-icon-box">
+                <Coffee size={22} color="#E50914" />
               </div>
+              <h3 className="dark-card-title">In-Seat Self-Ordering</h3>
+              <p className="dark-card-body">
+                Gamers browse the digital café menu directly from their seat. Cold Coca-Cola,
+                energy sips, nachos, and hot pizza slices can be ordered in two clicks.
+              </p>
+              <div className="dark-card-metric">
+                <span className="metric-num">2 Clicks</span>
+                <span className="metric-lbl">In-Seat Fast Ordering</span>
+              </div>
+            </div>
+
+            <div className="dark-card">
+              <div className="dark-card-icon-box">
+                <Zap size={22} color="#E50914" />
+              </div>
+              <h3 className="dark-card-title">Instant Kitchen Routing</h3>
+              <p className="dark-card-body">
+                Orders dispatch instantly to the kitchen floor display. Staff receive the station number
+                and customer name, delivering chilled cans and hot food in record time.
+              </p>
+              <div className="dark-card-metric">
+                <span className="metric-num">&lt; 4 Mins</span>
+                <span className="metric-lbl">Average In-Seat Delivery</span>
+              </div>
+            </div>
+
+            <div className="dark-card">
+              <div className="dark-card-icon-box">
+                <Package size={22} color="#E50914" />
+              </div>
+              <h3 className="dark-card-title">Auto-Depleting Inventory</h3>
+              <p className="dark-card-body">
+                Stock counts deplete automatically upon order confirmation. Kitchen staff receive
+                real-time alerts when Coca-Cola cans or snack supplies fall below par levels.
+              </p>
+              <div className="dark-card-metric">
+                <span className="metric-num">Real-Time</span>
+                <span className="metric-lbl">Stock Par Monitoring</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SCENE 05 — UNIFIED SYSTEM ROLES (3 ROLES, ZERO FRICTION) & FINAL CTA
+          ========================================================================= */}
+      <section id="roles" className="dark-section dark-section-alt">
+        <div className="dark-container">
+          <div className="dark-section-header">
+            <div className="dark-section-kicker">SCENE 05 • ACCESS MODEL</div>
+            <h2 className="dark-section-title">Three Roles. Zero Friction.</h2>
+            <p className="dark-section-subtitle">
+              We have merged front desk reception and café floor operations into a single staff command center,
+              giving your team unmatched speed and complete situational awareness.
+            </p>
+          </div>
+
+          <div className="dark-roles-grid">
+            {/* Role 1: Customer & Gamer */}
+            <div className="dark-role-card">
+              <div className="dark-role-top">
+                <span className="dark-role-tag">Gamer Portal</span>
+                <div className="dark-role-icon">
+                  <Gamepad2 size={20} color="#E50914" />
+                </div>
+              </div>
+              <h3 className="dark-role-title">Customer & Gamer</h3>
+              <p className="dark-role-desc">
+                Intuitive self-service portal for real-time station availability, advance seat reservations,
+                and direct in-session Coca-Cola & gaming gear ordering.
+              </p>
+              <ul className="dark-role-list">
+                <li>Check real-time station availability across PC & Console rigs</li>
+                <li>Make instant advance reservations for preferred time slots</li>
+                <li>Order chilled refreshments and snacks to their station</li>
+                <li>Monitor live session duration and access digital itemized bills</li>
+              </ul>
+              <div className="dark-role-scope">
+                Scope: Gamer Self-Service & In-Seat Orders
+              </div>
+            </div>
+
+            {/* Role 2: Café Staff & Receptionist (MERGED CENTERPIECE) */}
+            <div className="dark-role-card dark-role-featured">
+              <div className="dark-featured-pill">
+                <Sparkles size={12} color="#FFFFFF" />
+                <span>MERGED OPERATIONS DESK</span>
+              </div>
+              <div className="dark-role-top">
+                <span className="dark-role-tag dark-role-tag-red">Front Desk + Café Floor</span>
+                <div className="dark-role-icon dark-role-icon-red">
+                  <Users size={18} color="#FFFFFF" />
+                  <span style={{ color: '#FFFFFF', fontSize: '0.75rem', margin: '0 2px' }}>+</span>
+                  <Coffee size={18} color="#FFFFFF" />
+                </div>
+              </div>
+              <h3 className="dark-role-title" style={{ color: '#FFFFFF', fontSize: '1.35rem' }}>
+                Café Staff & Receptionist
+              </h3>
+              <p className="dark-role-desc">
+                A single unified terminal combining front-desk check-ins, live hardware session timers,
+                kitchen food & beverage orders, gaming accessories sales, inventory tracking, and final cashier billing.
+              </p>
+              <ul className="dark-role-list">
+                <li><strong>Front-Desk Check-In:</strong> Rapid customer lookup and instant station assignment</li>
+                <li><strong>Session Master:</strong> Start, monitor, and end gaming sessions with auto-tariff billing</li>
+                <li><strong>Café & Gear Orders:</strong> Receive and dispatch snacks and accessories attached to station IDs</li>
+                <li><strong>Inventory Oversight:</strong> Real-time ingredient deductions and stock reorder warnings</li>
+                <li><strong>Consolidated Checkout:</strong> Settle gaming duration + orders on a single invoice</li>
+              </ul>
+              <div className="dark-role-scope dark-role-scope-featured">
+                Scope: Front Desk • Session Timers • Kitchen • Cashier
+              </div>
+            </div>
+
+            {/* Role 3: System Administrator */}
+            <div className="dark-role-card">
+              <div className="dark-role-top">
+                <span className="dark-role-tag">System Governance</span>
+                <div className="dark-role-icon">
+                  <ShieldCheck size={20} color="#E50914" />
+                </div>
+              </div>
+              <h3 className="dark-role-title">System Administrator</h3>
+              <p className="dark-role-desc">
+                High-level governance over gaming hardware setups, employee credentials, hourly pricing structures,
+                master inventory (café and accessories), and financial reporting.
+              </p>
+              <ul className="dark-role-list">
+                <li>Configure gaming station specs, hardware types, and hourly rates</li>
+                <li>Manage employee accounts, credentials, and access permissions</li>
+                <li>Add & manage café items as well as gaming accessories</li>
+                <li>Generate real-time revenue analytics, station utilization, and F&B reports</li>
+              </ul>
+              <div className="dark-role-scope">
+                Scope: Infrastructure • Security • Business Analytics
+              </div>
+            </div>
+          </div>
+
+          {/* Minimal Cinematic Final CTA Banner */}
+          <div className="dark-cta-banner">
+            <div className="dark-cta-glow" />
+            <div className="dark-cta-inner">
+              <div className="dark-cta-left">
+                <div className="dark-cta-eyebrow">READY TO COMMAND YOUR CAFÉ?</div>
+                <h3 className="dark-cta-title">
+                  Experience The Unified Platform Today.
+                </h3>
+                <p className="dark-cta-desc">
+                  Access Customer, Merged Staff (Café & Receptionist), or Administrator portals now.
+                </p>
+              </div>
+              <button
+                className="dark-btn-primary dark-btn-cta"
+                onClick={onLogin}
+              >
+                <span>Launch System Portal</span>
+                <ArrowRight size={17} />
+              </button>
             </div>
           </div>
         </div>
