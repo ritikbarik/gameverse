@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../dark-landing.css';
+import heroConsoleCokeDark from '../assets/hero-console-coke-dark.jpg';
 import {
   Gamepad2,
   Monitor,
@@ -234,10 +235,16 @@ export default function LandingPage({ onLogin }) {
               {/* Master Studio Presentation Card */}
               <div className="dark-stage-card">
                 <img
-                  src="/hero-console-coke-dark.jpg"
+                  src={heroConsoleCokeDark}
                   alt="GameVerse Next-Gen Onyx Gaming Console with Chilled Coca-Cola in Dark Studio"
                   className="dark-stage-img"
                   loading="eager"
+                  onError={(e) => {
+                    const fallbackUrl = `${import.meta.env.BASE_URL}hero-console-coke-dark.jpg`;
+                    if (e.currentTarget.src !== fallbackUrl) {
+                      e.currentTarget.src = fallbackUrl;
+                    }
+                  }}
                 />
 
                 {/* Glass Light Sheen */}
