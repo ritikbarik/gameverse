@@ -35,8 +35,12 @@ export default function StaffConsole({ onOpenReceipt, onNavigate }) {
   const [activeTab, setActiveTab] = useState('overview');
 
   const activeSessions = sessions.filter(s => s.end_time === null);
-  const pendingOrders = orders.filter(o => o.order_status === 'Pending');
-  const unpaidBills = bills.filter(b => b.payment_status === 'Pending');
+  const pendingOrders = orders.filter(
+    o => o.order_status !== 'Delivered' && o.order_status !== 'Delivered to Station' && !o.delivered
+  );
+  const unpaidBills = bills.filter(
+    b => b.payment_status === 'Unpaid' || b.payment_status === 'Pending'
+  );
   const lowStockItems = inventory.filter(i => i.quantity_in_stock <= i.reorder_level);
   const freeStations = stations.filter(s => s.status === 'Free');
 

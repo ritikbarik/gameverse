@@ -229,7 +229,7 @@ export default function CustomerSessions() {
                         </div>
 
                         <span className={`badge ${isDelivered ? 'badge-free' : 'badge-maintenance'}`}>
-                          {isDelivered ? 'Delivered to Station' : 'In Preparation / Pending Delivery'}
+                          {isDelivered ? '✓ Delivered (Added to Bill)' : '⏳ In Kitchen / Pending Delivery'}
                         </span>
                       </div>
                     );

@@ -426,10 +426,17 @@ export function AppProvider({ children }) {
     const durationStr = `${hours} hrs`;
     const endIso = new Date().toISOString();
 
-    // Calculate any café charges for this session
-    const sessionOrders = orders.filter(o => o.session_id === sessionId);
-    const cafeCharge = sessionOrders.reduce((sum, o) => sum + (Number(o.amount) || 0), 0);
+    // Calculate ONLY confirmed delivered café orders for this session (FR-05 / FR-06)
+    const deliveredOrders = orders.filter(
+      o => o.session_id === sessionId && (o.order_status === 'Delivered' || o.order_status === 'Delivered to Station' || o.delivered === true)
+    );
+    const cafeCharge = deliveredOrders.reduce((sum, o) => sum + (Number(o.amount) || 0), 0);
     const totalAmount = Math.round((sessionCharge + cafeCharge) * 100) / 100;
+
+    // Check for any unconfirmed pending café orders
+    const pendingOrders = orders.filter(
+      o => o.session_id === sessionId && !o.delivered && o.order_status !== 'Delivered' && o.order_status !== 'Delivered to Station'
+    );
 
     // Update Session
     setSessions(prev => {
@@ -465,7 +472,7 @@ export function AppProvider({ children }) {
       });
     }
 
-    // FR-06: Automatically Generate Bill
+    // FR-06: Automatically Generate Bill with Gaming Charges + Delivered Café Charges
     const newBillId = `BIL-${Date.now().toString().slice(-4)}`;
     const newBill = {
       bill_id: newBillId,
@@ -485,12 +492,17 @@ export function AppProvider({ children }) {
       broadcastSync('bills', updated);
       return updated;
     });
-    notify(`Session ended. Bill ${newBillId} generated (Total: ₹${totalAmount.toFixed(2)}).`, 'success');
+
+    if (pendingOrders.length > 0) {
+      notify(`Session ended. Bill ${newBillId} generated (Total: ₹${totalAmount.toFixed(2)}). Note: ${pendingOrders.length} undelivered café item(s) were excluded from billing.`, 'info');
+    } else {
+      notify(`Session ended. Bill ${newBillId} generated at Reception (Total: ₹${totalAmount.toFixed(2)}).`, 'success');
+    }
     return newBill;
   };
 
   // FR-05: Café Orders & Real-time Customer Food Demands
-  const addCafeOrder = ({ session_id, item_id, quantity }) => {
+  const addCafeOrder = ({ session_id, item_id, quantity, delivered = false }) => {
     const qty = parseInt(quantity, 10);
     if (!session_id) {
       notify('Please select an active session.', 'error');
@@ -531,6 +543,8 @@ export function AppProvider({ children }) {
 
     const orderAmount = Math.round(qty * invItem.unit_price * 100) / 100;
     const newOrderId = `ORD-${Date.now().toString().slice(-4)}`;
+    const nowIso = new Date().toISOString();
+
     const newOrder = {
       order_id: newOrderId,
       session_id: session_id,
@@ -542,8 +556,10 @@ export function AppProvider({ children }) {
       quantity: qty,
       unit_price: invItem.unit_price,
       amount: orderAmount,
-      order_status: 'Pending Delivery',
-      timestamp: new Date().toISOString()
+      order_status: delivered ? 'Delivered' : 'Pending Delivery',
+      delivered: Boolean(delivered),
+      delivered_at: delivered ? nowIso : null,
+      timestamp: nowIso
     };
 
     setOrders(prev => {
@@ -551,18 +567,97 @@ export function AppProvider({ children }) {
       broadcastSync('orders', updated);
       return updated;
     });
-    notify(`Food demand placed: ${qty}x ${invItem.item_name} (₹${orderAmount.toFixed(2)}) for Station ${session.station_id}. Synced to Admin in real time!`, 'success');
+
+    // If delivered immediately, update bill if one exists
+    if (delivered) {
+      setBills(prevBills => {
+        const billIndex = prevBills.findIndex(b => b.session_id === session_id);
+        if (billIndex >= 0) {
+          const bill = prevBills[billIndex];
+          const newCafeCharge = Math.round((Number(bill.cafe_charge || 0) + orderAmount) * 100) / 100;
+          const newTotal = Math.round((Number(bill.session_charge || 0) + newCafeCharge) * 100) / 100;
+          const updated = [...prevBills];
+          updated[billIndex] = { ...bill, cafe_charge: newCafeCharge, total_amount: newTotal };
+          broadcastSync('bills', updated);
+          return updated;
+        }
+        return prevBills;
+      });
+    }
+
+    notify(
+      delivered
+        ? `Order placed & delivered: ${qty}x ${invItem.item_name} (₹${orderAmount.toFixed(2)}) for Station ${session.station_id}. Added to bill!`
+        : `Food demand placed: ${qty}x ${invItem.item_name} for Station ${session.station_id}. Reflected in Café Portal!`,
+      'success'
+    );
     return { success: true, order: newOrder };
   };
 
-  // Update Food Order Status (e.g., Pending Delivery -> Delivered)
+  // Confirm order delivery from Café to Customer Station, and add cost to session bill
+  const confirmOrderDelivery = (orderId) => {
+    let deliveredOrder = null;
+    const nowIso = new Date().toISOString();
+
+    setOrders(prev => {
+      const updated = prev.map(o => {
+        if (o.order_id === orderId) {
+          deliveredOrder = {
+            ...o,
+            order_status: 'Delivered',
+            delivered: true,
+            delivered_at: nowIso
+          };
+          return deliveredOrder;
+        }
+        return o;
+      });
+      broadcastSync('orders', updated);
+
+      // If a bill already exists for this session, add the confirmed cost to the bill
+      if (deliveredOrder) {
+        setBills(prevBills => {
+          const billIndex = prevBills.findIndex(b => b.session_id === deliveredOrder.session_id);
+          if (billIndex >= 0) {
+            const bill = prevBills[billIndex];
+            const sessionDeliveredOrders = updated.filter(
+              o => o.session_id === deliveredOrder.session_id && (o.order_status === 'Delivered' || o.delivered === true)
+            );
+            const newCafeCharge = sessionDeliveredOrders.reduce((sum, o) => sum + (Number(o.amount) || 0), 0);
+            const newTotal = Math.round((Number(bill.session_charge || 0) + newCafeCharge) * 100) / 100;
+            const updatedBills = [...prevBills];
+            updatedBills[billIndex] = {
+              ...bill,
+              cafe_charge: newCafeCharge,
+              total_amount: newTotal
+            };
+            broadcastSync('bills', updatedBills);
+            return updatedBills;
+          }
+          return prevBills;
+        });
+      }
+
+      return updated;
+    });
+
+    if (deliveredOrder) {
+      notify(`Order ${orderId} delivered to Station ${deliveredOrder.station_id}! Cost of ₹${deliveredOrder.amount.toFixed(2)} confirmed and added to billing.`, 'success');
+    }
+    return deliveredOrder;
+  };
+
+  // General Update Food Order Status
   const updateOrderStatus = (orderId, newStatus) => {
+    if (newStatus === 'Delivered' || newStatus === 'Delivered to Station') {
+      return confirmOrderDelivery(orderId);
+    }
     setOrders(prev => {
       const updated = prev.map(o => (o.order_id === orderId ? { ...o, order_status: newStatus } : o));
       broadcastSync('orders', updated);
       return updated;
     });
-    notify(`Order ${orderId} marked as ${newStatus}. Synced to Customer portal.`, 'success');
+    notify(`Order ${orderId} status changed to ${newStatus}.`, 'info');
   };
 
   // FR-06: Billing & Payment
@@ -672,6 +767,7 @@ export function AppProvider({ children }) {
         startSession,
         endSession,
         addCafeOrder,
+        confirmOrderDelivery,
         updateOrderStatus,
         recordPayment,
         updateStock,

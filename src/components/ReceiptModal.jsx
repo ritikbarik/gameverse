@@ -8,7 +8,9 @@ export default function ReceiptModal({ bill, onClose }) {
   if (!bill) return null;
 
   const session = sessions.find(s => s.session_id === bill.session_id);
-  const sessionOrders = orders.filter(o => o.session_id === bill.session_id);
+  const sessionOrders = orders.filter(
+    o => o.session_id === bill.session_id && (o.order_status === 'Delivered' || o.order_status === 'Delivered to Station' || o.delivered)
+  );
   const station = session ? stations.find(st => st.station_id === session.station_id) : null;
 
   const handlePrint = () => {

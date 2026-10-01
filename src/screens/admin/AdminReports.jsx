@@ -41,6 +41,35 @@ export default function AdminReports() {
           paidCount: filteredBills.filter(b => b.payment_status === 'Paid').length
         }
       });
+    } else if (reportType === 'CAFE_ORDERS') {
+      const filteredOrders = orders.filter(o => {
+        const oDate = (o.timestamp || today).split('T')[0];
+        return oDate >= startDate && oDate <= endDate;
+      });
+
+      const deliveredOrders = filteredOrders.filter(
+        o => o.order_status === 'Delivered' || o.order_status === 'Delivered to Station' || o.delivered
+      );
+      const pendingOrders = filteredOrders.filter(
+        o => o.order_status !== 'Delivered' && !o.delivered
+      );
+      const totalDeliveredRevenue = deliveredOrders.reduce((sum, o) => sum + Number(o.amount || 0), 0);
+      const totalPendingRevenue = pendingOrders.reduce((sum, o) => sum + Number(o.amount || 0), 0);
+
+      setGeneratedReport({
+        type: 'CAFE_ORDERS',
+        title: 'Café Refreshment Orders & Delivery Audit Log',
+        startDate,
+        endDate,
+        records: filteredOrders,
+        summary: {
+          totalOrders: filteredOrders.length,
+          deliveredCount: deliveredOrders.length,
+          pendingCount: pendingOrders.length,
+          deliveredRevenue: Math.round(totalDeliveredRevenue * 100) / 100,
+          pendingRevenue: Math.round(totalPendingRevenue * 100) / 100
+        }
+      });
     } else if (reportType === 'USAGE') {
       // Aggregate usage per station within date range
       const filteredSessions = sessions.filter(s => {
@@ -150,9 +179,10 @@ export default function AdminReports() {
                 value={reportType}
                 onChange={e => setReportType(e.target.value)}
               >
-                <option value="REVENUE">1. Revenue Report</option>
-                <option value="USAGE">2. Station-Usage Report</option>
-                <option value="INVENTORY">3. Inventory Report</option>
+                <option value="REVENUE">1. Revenue Report (Gaming & Café Bills)</option>
+                <option value="CAFE_ORDERS">2. Café Orders & Delivery Audit Log</option>
+                <option value="USAGE">3. Station-Usage Report</option>
+                <option value="INVENTORY">4. Inventory Report</option>
               </select>
             </div>
 
@@ -274,6 +304,104 @@ export default function AdminReports() {
                           <td>{b.payment_date || 'Pending'}</td>
                         </tr>
                       ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* Café Orders & Delivery Audit Log Render */}
+          {generatedReport.type === 'CAFE_ORDERS' && (
+            <div>
+              <div className="grid-cards" style={{ marginBottom: '1.5rem' }}>
+                <div className="card" style={{ background: 'var(--bg-surface)' }}>
+                  <div className="card-title">Total Orders Placed</div>
+                  <div className="card-value" style={{ color: 'var(--accent-cyan)' }}>
+                    {generatedReport.summary.totalOrders}
+                  </div>
+                  <div className="card-hint">Ordered by customers during period</div>
+                </div>
+                <div className="card" style={{ background: 'var(--bg-surface)' }}>
+                  <div className="card-title">Delivered & Billed Orders</div>
+                  <div className="card-value" style={{ color: 'var(--accent-emerald)' }}>
+                    {generatedReport.summary.deliveredCount}
+                  </div>
+                  <div className="card-hint">Confirmed delivered • Added to bill</div>
+                </div>
+                <div className="card" style={{ background: 'var(--bg-surface)' }}>
+                  <div className="card-title">Pending Kitchen Delivery</div>
+                  <div className="card-value" style={{ color: generatedReport.summary.pendingCount > 0 ? 'var(--accent-amber)' : 'var(--text-muted)' }}>
+                    {generatedReport.summary.pendingCount}
+                  </div>
+                  <div className="card-hint">Awaiting dispatch (Excluded from bill)</div>
+                </div>
+                <div className="card" style={{ background: 'var(--bg-surface)' }}>
+                  <div className="card-title">Delivered Café Revenue</div>
+                  <div className="card-value" style={{ color: 'var(--accent-emerald)' }}>
+                    ₹{generatedReport.summary.deliveredRevenue.toFixed(2)}
+                  </div>
+                  <div className="card-hint">Added to Reception Billing Register</div>
+                </div>
+              </div>
+
+              <div className="table-container">
+                <div style={{ padding: '0.85rem 1.25rem', borderBottom: '1px solid var(--border-subtle)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 700 }}>Itemized Food & Drink Delivery Audit</h3>
+                  <span className="badge badge-primary">{generatedReport.records.length} records</span>
+                </div>
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Session ID</th>
+                      <th>Station</th>
+                      <th>Customer Name</th>
+                      <th>Item Ordered</th>
+                      <th>Qty</th>
+                      <th>Unit Price</th>
+                      <th>Total Amount</th>
+                      <th>Delivery Status</th>
+                      <th>Delivery Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {generatedReport.records.length === 0 ? (
+                      <tr>
+                        <td colSpan="10" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
+                          No café orders logged for this selected date range.
+                        </td>
+                      </tr>
+                    ) : (
+                      generatedReport.records.map(ord => {
+                        const isDelivered = ord.order_status === 'Delivered' || ord.order_status === 'Delivered to Station' || ord.delivered;
+                        return (
+                          <tr key={ord.order_id}>
+                            <td className="table-code">{ord.order_id}</td>
+                            <td>{ord.session_id}</td>
+                            <td><strong>{ord.station_id || 'Station'}</strong></td>
+                            <td>{ord.customer_name || 'Customer'}</td>
+                            <td><strong>{ord.item_name}</strong></td>
+                            <td>{ord.quantity}x</td>
+                            <td>₹{Number(ord.unit_price).toFixed(2)}</td>
+                            <td style={{ fontWeight: 800, color: 'var(--accent-cyan)' }}>
+                              ₹{Number(ord.amount).toFixed(2)}
+                            </td>
+                            <td>
+                              {isDelivered ? (
+                                <span className="badge badge-free">✓ Delivered & Billed</span>
+                              ) : (
+                                <span className="badge badge-maintenance">⏳ Pending Delivery</span>
+                              )}
+                            </td>
+                            <td>
+                              {ord.delivered_at
+                                ? new Date(ord.delivered_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                                : 'Pending'}
+                            </td>
+                          </tr>
+                        );
+                      })
                     )}
                   </tbody>
                 </table>

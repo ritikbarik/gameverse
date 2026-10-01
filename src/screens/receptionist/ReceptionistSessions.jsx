@@ -8,6 +8,7 @@ export default function ReceptionistSessions({ onOpenReceipt, onNavigate }) {
     stations,
     reservations,
     sessions,
+    orders,
     startSession,
     endSession
   } = useApp();
@@ -336,6 +337,62 @@ export default function ReceptionistSessions({ onOpenReceipt, onNavigate }) {
                     Calculates session charge = duration × hourly rate. The station will return to <strong>Free</strong> status, and a consolidated bill will be generated.
                   </div>
                 </div>
+
+                {/* Café Items Breakdown Preview */}
+                {(() => {
+                  const sOrders = orders.filter(o => o.session_id === endingSession.session_id);
+                  const deliveredO = sOrders.filter(o => o.order_status === 'Delivered' || o.order_status === 'Delivered to Station' || o.delivered);
+                  const pendingO = sOrders.filter(o => o.order_status !== 'Delivered' && !o.delivered);
+                  const deliveredAmt = deliveredO.reduce((sum, o) => sum + Number(o.amount || 0), 0);
+                  const st = stations.find(s => s.station_id === endingSession.station_id);
+                  const hRate = st ? st.hourly_rate : 80;
+                  const gCharge = Math.round((parseFloat(manualHours) || 0) * hRate * 100) / 100;
+                  const finalAmt = Math.round((gCharge + deliveredAmt) * 100) / 100;
+
+                  return (
+                    <div style={{
+                      background: 'var(--bg-surface)',
+                      border: '1px solid var(--border-subtle)',
+                      borderRadius: 'var(--radius-md)',
+                      padding: '0.85rem',
+                      marginBottom: '1rem',
+                      fontSize: '0.825rem'
+                    }}>
+                      <div style={{ fontWeight: 700, marginBottom: '0.4rem', color: 'var(--text-main)' }}>
+                        Preliminary Billing Preview:
+                      </div>
+                      <div className="receipt-row">
+                        <span>Gaming Charge ({manualHours || 0} hrs @ ₹{hRate}/hr):</span>
+                        <strong>₹{gCharge.toFixed(2)}</strong>
+                      </div>
+                      <div className="receipt-row">
+                        <span>Delivered Café Items ({deliveredO.length}):</span>
+                        <strong style={{ color: 'var(--accent-emerald)' }}>+₹{deliveredAmt.toFixed(2)}</strong>
+                      </div>
+
+                      {pendingO.length > 0 && (
+                        <div style={{
+                          background: 'rgba(245, 158, 11, 0.12)',
+                          border: '1px solid #FCD34D',
+                          borderRadius: '4px',
+                          padding: '0.4rem 0.6rem',
+                          color: '#92400E',
+                          fontSize: '0.75rem',
+                          margin: '0.5rem 0'
+                        }}>
+                          ⚠️ <strong>{pendingO.length} café order(s)</strong> are still pending delivery in the kitchen. Per policy, <em>undelivered items are excluded from the bill</em> until confirmed by café.
+                        </div>
+                      )}
+
+                      <div className="receipt-row" style={{ borderTop: '1px dashed var(--border-subtle)', paddingTop: '0.4rem', marginTop: '0.4rem' }}>
+                        <span style={{ fontWeight: 700, fontSize: '0.9rem' }}>Estimated Total Bill:</span>
+                        <strong style={{ fontSize: '1.05rem', color: 'var(--accent-cyan)' }}>
+                          ₹{finalAmt.toFixed(2)}
+                        </strong>
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
 
               <div className="modal-footer">

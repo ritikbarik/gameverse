@@ -209,52 +209,100 @@ export default function CustomerCafeOrder() {
         <div>
           <div className="table-container">
             <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid var(--border-subtle)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h2 style={{ fontSize: '1.05rem' }}>Items Ordered This Session</h2>
+              <div>
+                <h2 style={{ fontSize: '1.05rem', fontWeight: 700 }}>Orders for Station {activeSession ? activeSession.station_id : ''}</h2>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                  Cost is added to your bill once delivery is confirmed by the café counter
+                </div>
+              </div>
               <span className="badge badge-cyan">
                 {activeSessionOrders.length} items
               </span>
             </div>
             {activeSessionOrders.length === 0 ? (
               <div style={{ padding: '2.5rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-                No items ordered for this session yet.
+                No items ordered for this session yet. Pick a snack or drink to be delivered to your station!
               </div>
             ) : (
               <div>
                 <table className="data-table">
                   <thead>
                     <tr>
-                      <th>Order ID</th>
                       <th>Item Name</th>
                       <th>Qty</th>
-                      <th>Unit Price</th>
                       <th>Amount</th>
+                      <th>Delivery & Bill Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {activeSessionOrders.map(ord => (
-                      <tr key={ord.order_id}>
-                        <td className="table-code">{ord.order_id}</td>
-                        <td>{ord.item_name}</td>
-                        <td>{ord.quantity}x</td>
-                        <td>₹{Number(ord.unit_price).toFixed(2)}</td>
-                        <td style={{ fontWeight: 700, color: 'var(--accent-cyan)' }}>
-                          ₹{Number(ord.amount).toFixed(2)}
-                        </td>
-                      </tr>
-                    ))}
+                    {activeSessionOrders.map(ord => {
+                      const isDelivered = ord.order_status === 'Delivered' || ord.order_status === 'Delivered to Station' || ord.delivered;
+                      return (
+                        <tr key={ord.order_id}>
+                          <td>
+                            <strong>{ord.item_name}</strong>
+                            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{ord.order_id}</div>
+                          </td>
+                          <td>{ord.quantity}x</td>
+                          <td style={{ fontWeight: 700, color: 'var(--text-main)' }}>
+                            ₹{Number(ord.amount).toFixed(2)}
+                          </td>
+                          <td>
+                            {isDelivered ? (
+                              <span className="badge badge-free" style={{ fontSize: '0.72rem' }}>
+                                ✓ Delivered (Added to Bill)
+                              </span>
+                            ) : (
+                              <span className="badge badge-maintenance" style={{ fontSize: '0.72rem' }}>
+                                ⏳ In Kitchen / Pending Delivery
+                              </span>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
                 <div style={{
                   padding: '1rem 1.25rem',
                   borderTop: '1px solid var(--border-subtle)',
+                  background: 'var(--bg-surface)',
                   display: 'flex',
-                  justifyContent: 'space-between',
-                  background: 'var(--bg-surface)'
+                  flexDirection: 'column',
+                  gap: '0.5rem'
                 }}>
-                  <span style={{ fontWeight: 600 }}>Total Café Charges:</span>
-                  <span style={{ fontWeight: 800, color: 'var(--accent-cyan)', fontSize: '1.05rem' }}>
-                    ₹{activeSessionOrders.reduce((sum, o) => sum + Number(o.amount), 0).toFixed(2)}
-                  </span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                    <span style={{ color: 'var(--accent-emerald)', fontWeight: 600 }}>Delivered & Added to Bill:</span>
+                    <strong style={{ color: 'var(--accent-emerald)' }}>
+                      ₹{activeSessionOrders
+                        .filter(o => o.order_status === 'Delivered' || o.order_status === 'Delivered to Station' || o.delivered)
+                        .reduce((sum, o) => sum + Number(o.amount), 0)
+                        .toFixed(2)}
+                    </strong>
+                  </div>
+                  {activeSessionOrders.some(o => o.order_status !== 'Delivered' && !o.delivered) && (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                      <span style={{ color: '#D97706', fontWeight: 600 }}>Pending Delivery (Not Billed Yet):</span>
+                      <strong style={{ color: '#D97706' }}>
+                        ₹{activeSessionOrders
+                          .filter(o => o.order_status !== 'Delivered' && !o.delivered)
+                          .reduce((sum, o) => sum + Number(o.amount), 0)
+                          .toFixed(2)}
+                      </strong>
+                    </div>
+                  )}
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    borderTop: '1px solid var(--border-subtle)',
+                    paddingTop: '0.5rem',
+                    marginTop: '0.25rem'
+                  }}>
+                    <span style={{ fontWeight: 700 }}>Total Café Demands:</span>
+                    <span style={{ fontWeight: 800, color: 'var(--accent-cyan)', fontSize: '1.05rem' }}>
+                      ₹{activeSessionOrders.reduce((sum, o) => sum + Number(o.amount), 0).toFixed(2)}
+                    </span>
+                  </div>
                 </div>
               </div>
             )}
