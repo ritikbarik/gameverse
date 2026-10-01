@@ -52,7 +52,7 @@ export const INITIAL_STATIONS = [
   {
     station_id: 'STN-PC-01',
     station_type: 'PC',
-    status: 'Occupied',
+    status: 'Free',
     hourly_rate: 80.00
   },
   {
@@ -88,7 +88,7 @@ export const INITIAL_STATIONS = [
   {
     station_id: 'STN-CON-03',
     station_type: 'Console',
-    status: 'Occupied',
+    status: 'Free',
     hourly_rate: 120.00
   }
 ];
@@ -102,7 +102,7 @@ export const INITIAL_RESERVATIONS = [
     date: '2026-09-30',
     start_time: '18:00',
     end_time: '20:00',
-    status: 'Active'
+    status: 'Confirmed'
   },
   {
     reservation_id: 'RES-102',
@@ -112,7 +112,7 @@ export const INITIAL_RESERVATIONS = [
     date: '2026-09-30',
     start_time: '19:00',
     end_time: '21:00',
-    status: 'Active'
+    status: 'Confirmed'
   },
   {
     reservation_id: 'RES-103',
@@ -126,95 +126,11 @@ export const INITIAL_RESERVATIONS = [
   }
 ];
 
-export const INITIAL_SESSIONS = [
-  {
-    session_id: 'SES-501',
-    reservation_id: 'RES-101',
-    customer_id: 'USR-004',
-    customer_name: 'Rohan Sharma',
-    station_id: 'STN-PC-01',
-    start_time: '2026-09-30T18:00:00',
-    end_time: null,
-    duration: '2.5 hrs (Active)',
-    duration_hours: 2.5,
-    session_charge: 200.00,
-    status: 'Active'
-  },
-  {
-    session_id: 'SES-502',
-    reservation_id: 'RES-102',
-    customer_id: 'USR-005',
-    customer_name: 'Emily Davis',
-    station_id: 'STN-CON-03',
-    start_time: '2026-09-30T19:00:00',
-    end_time: null,
-    duration: '1.5 hrs (Active)',
-    duration_hours: 1.5,
-    session_charge: 180.00,
-    status: 'Active'
-  },
-  {
-    session_id: 'SES-499',
-    reservation_id: 'RES-098',
-    customer_id: 'USR-005',
-    customer_name: 'Emily Davis',
-    station_id: 'STN-PC-02',
-    start_time: '2026-09-29T15:00:00',
-    end_time: '2026-09-29T17:00:00',
-    duration: '2.0 hrs',
-    duration_hours: 2.0,
-    session_charge: 160.00,
-    status: 'Completed'
-  }
-];
+export const INITIAL_SESSIONS = [];
 
-export const INITIAL_ORDERS = [
-  {
-    order_id: 'ORD-301',
-    session_id: 'SES-501',
-    item_id: 'INV-01',
-    item_name: 'Monster Energy Drink 500ml',
-    quantity: 2,
-    unit_price: 120.00,
-    amount: 240.00,
-    timestamp: '2026-09-30T18:30:00'
-  },
-  {
-    order_id: 'ORD-302',
-    session_id: 'SES-501',
-    item_id: 'INV-02',
-    item_name: 'Crispy Chicken Burger',
-    quantity: 1,
-    unit_price: 150.00,
-    amount: 150.00,
-    timestamp: '2026-09-30T19:00:00'
-  },
-  {
-    order_id: 'ORD-299',
-    session_id: 'SES-499',
-    item_id: 'INV-03',
-    item_name: 'Iced Caramel Macchiato',
-    quantity: 1,
-    unit_price: 110.00,
-    amount: 110.00,
-    timestamp: '2026-09-29T15:45:00'
-  }
-];
+export const INITIAL_ORDERS = [];
 
-export const INITIAL_BILLS = [
-  {
-    bill_id: 'BIL-701',
-    session_id: 'SES-499',
-    customer_id: 'USR-005',
-    customer_name: 'Emily Davis',
-    station_id: 'STN-PC-02',
-    session_charge: 160.00,
-    cafe_charge: 110.00,
-    total_amount: 270.00,
-    payment_status: 'Paid',
-    payment_date: '2026-09-29'
-  }
-];
+export const INITIAL_BILLS = [];
 
 export const INITIAL_INVENTORY = [
   {

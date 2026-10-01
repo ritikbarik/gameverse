@@ -42,13 +42,54 @@ try {
   console.log('BroadcastChannel not supported in current environment', e);
 }
 
+const PRESET_SESSION_IDS = ['SES-501', 'SES-502', 'SES-499'];
+const PRESET_ORDER_IDS = ['ORD-301', 'ORD-302', 'ORD-299'];
+const PRESET_BILL_IDS = ['BIL-701'];
+
 export function AppProvider({ children }) {
   const [users, setUsers] = useState(() => loadStorage('users', INITIAL_USERS));
-  const [stations, setStations] = useState(() => loadStorage('stations', INITIAL_STATIONS));
-  const [reservations, setReservations] = useState(() => loadStorage('reservations', INITIAL_RESERVATIONS));
-  const [sessions, setSessions] = useState(() => loadStorage('sessions', INITIAL_SESSIONS));
-  const [orders, setOrders] = useState(() => loadStorage('orders', INITIAL_ORDERS));
-  const [bills, setBills] = useState(() => loadStorage('bills', INITIAL_BILLS));
+  const [sessions, setSessions] = useState(() => {
+    const loaded = loadStorage('sessions', INITIAL_SESSIONS);
+    return Array.isArray(loaded)
+      ? loaded.filter(s => !PRESET_SESSION_IDS.includes(s.session_id))
+      : [];
+  });
+  const [orders, setOrders] = useState(() => {
+    const loaded = loadStorage('orders', INITIAL_ORDERS);
+    return Array.isArray(loaded)
+      ? loaded.filter(o => !PRESET_ORDER_IDS.includes(o.order_id) && !PRESET_SESSION_IDS.includes(o.session_id))
+      : [];
+  });
+  const [bills, setBills] = useState(() => {
+    const loaded = loadStorage('bills', INITIAL_BILLS);
+    return Array.isArray(loaded)
+      ? loaded.filter(b => !PRESET_BILL_IDS.includes(b.bill_id) && !PRESET_SESSION_IDS.includes(b.session_id))
+      : [];
+  });
+  const [stations, setStations] = useState(() => {
+    const loaded = loadStorage('stations', INITIAL_STATIONS);
+    if (!Array.isArray(loaded)) return INITIAL_STATIONS;
+    return loaded.map(st => {
+      if ((st.station_id === 'STN-PC-01' || st.station_id === 'STN-CON-03') && st.status === 'Occupied') {
+        const rawSessions = loadStorage('sessions', []);
+        const hasLiveCustomSession = Array.isArray(rawSessions) && rawSessions.some(
+          s => s.station_id === st.station_id && s.status === 'Active' && !PRESET_SESSION_IDS.includes(s.session_id)
+        );
+        return hasLiveCustomSession ? st : { ...st, status: 'Free' };
+      }
+      return st;
+    });
+  });
+  const [reservations, setReservations] = useState(() => {
+    const loaded = loadStorage('reservations', INITIAL_RESERVATIONS);
+    if (!Array.isArray(loaded)) return INITIAL_RESERVATIONS;
+    return loaded.map(r => {
+      if (['RES-101', 'RES-102'].includes(r.reservation_id) && r.status === 'Active') {
+        return { ...r, status: 'Confirmed' };
+      }
+      return r;
+    });
+  });
   const [inventory, setInventory] = useState(() => loadStorage('inventory', INITIAL_INVENTORY));
 
   // Current logged in user. Persisted in localStorage so user stays logged in across reload until explicit Sign Out
