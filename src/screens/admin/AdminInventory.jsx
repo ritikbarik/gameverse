@@ -359,7 +359,7 @@ export default function AdminInventory() {
                           type="button"
                           onClick={() => applyPreset(p)}
                           style={{
-                            background: '#FFFFFF',
+                            background: 'var(--bg-elevated)',
                             border: '1px solid var(--border-subtle)',
                             borderRadius: '6px',
                             padding: '0.25rem 0.55rem',
@@ -460,7 +460,7 @@ export default function AdminInventory() {
                     type="button"
                     className="btn btn-secondary"
                     onClick={() => handleDelete(editingItem.item_id)}
-                    style={{ color: '#DC2626', borderColor: '#FECACA', background: '#FEF2F2' }}
+                    style={{ color: '#ff4d4f', borderColor: 'rgba(229, 9, 20, 0.35)', background: 'rgba(229, 9, 20, 0.12)' }}
                   >
                     <Trash2 size={14} /> Delete
                   </button>

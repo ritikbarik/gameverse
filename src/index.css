@@ -46,8 +46,8 @@
   --accent-cyan: #E50914;
   --accent-blue: #E50914;
   --accent-indigo: #B80710;
-  --accent-emerald: #2E7D32;
-  --accent-amber: #E65100;
+  --accent-emerald: #10B981;
+  --accent-amber: #F59E0B;
   --accent-rose: #E50914;
 
   /* Shadows */
@@ -495,41 +495,41 @@ h1, h2, h3, h4, h5, h6 {
 
 /* FREE & PAID -> Soft green */
 .badge-free, .badge-paid, .badge-confirmed {
-  background: #E8F5E9;
-  color: #2E7D32;
-  border: 1px solid #C8E6C9;
+  background: rgba(16, 185, 129, 0.16);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
 }
 
 /* OCCUPIED & CANCELLED -> Soft red */
 .badge-occupied, .badge-cancelled {
-  background: #FFEBEE;
-  color: #E50914;
+  background: rgba(229, 9, 20, 0.16);
+  color: #ff4d4f;
   border: 1px solid rgba(229, 9, 20, 0.35);
 }
 
 /* MAINTENANCE & PENDING / UNPAID -> Soft amber */
 .badge-maintenance, .badge-unpaid, .badge-pending {
-  background: #FFF3E0;
-  color: #E65100;
-  border: 1px solid #FFE0B2;
+  background: rgba(245, 158, 11, 0.16);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
 }
 
 /* RESERVED & ACTIVE -> Soft red/neutral */
 .badge-reserved, .badge-active, .badge-primary {
   background: rgba(229, 9, 20, 0.16);
-  color: #E50914;
+  color: #ff4d4f;
   border: 1px solid rgba(229, 9, 20, 0.35);
 }
 
 .badge-completed {
-  background: #F5F5F5;
-  color: #666666;
-  border: 1px solid #E0E0E0;
+  background: rgba(255, 255, 255, 0.08);
+  color: #a3a3a3;
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .badge-lowstock {
-  background: #FFEBEE;
-  color: #E50914;
+  background: rgba(229, 9, 20, 0.2);
+  color: #ff4d4f;
   border: 1px solid #F40009;
   animation: pulse-border 2s infinite;
 }

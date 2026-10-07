@@ -224,18 +224,19 @@ export default function StaffConsole({ onOpenReceipt, onNavigate }) {
                         padding: '0.85rem',
                         borderRadius: 'var(--radius-md)',
                         border: '1px solid',
-                        borderColor: isOcc ? '#FFCDD2' : isMaint ? '#FFE0B2' : '#C8E6C9',
-                        backgroundColor: isOcc ? '#FFEBEE' : isMaint ? '#FFF3E0' : '#E8F5E9',
-                        textAlign: 'center'
+                        borderColor: isOcc ? 'rgba(229, 9, 20, 0.45)' : isMaint ? 'rgba(245, 158, 11, 0.45)' : 'rgba(16, 185, 129, 0.45)',
+                        backgroundColor: isOcc ? 'rgba(229, 9, 20, 0.08)' : isMaint ? 'rgba(245, 158, 11, 0.08)' : 'rgba(16, 185, 129, 0.08)',
+                        textAlign: 'center',
+                        transition: 'all 0.2s ease'
                       }}
                     >
-                      <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--text-main)' }}>
+                      <div style={{ fontWeight: 800, fontSize: '0.9rem', color: 'var(--text-main)', letterSpacing: '0.02em' }}>
                         {st.station_id}
                       </div>
-                      <div style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', margin: '0.2rem 0' }}>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', margin: '0.25rem 0 0.5rem 0' }}>
                         {st.station_type} • ₹{st.hourly_rate.toFixed(2)}/h
                       </div>
-                      <span className={`badge ${isOcc ? 'badge-occupied' : isMaint ? 'badge-maintenance' : 'badge-free'}`} style={{ fontSize: '0.625rem', padding: '0.15rem 0.4rem' }}>
+                      <span className={`badge ${isOcc ? 'badge-occupied' : isMaint ? 'badge-maintenance' : 'badge-free'}`} style={{ fontSize: '0.65rem', padding: '0.15rem 0.5rem' }}>
                         {st.status}
                       </span>
                     </div>
@@ -263,7 +264,7 @@ export default function StaffConsole({ onOpenReceipt, onNavigate }) {
 
               {lowStockItems.length === 0 ? (
                 <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
-                  <CheckCircle2 size={32} color="#10b981" style={{ margin: '0 auto 0.5rem auto' }} />
+                  <CheckCircle2 size={32} color="var(--accent-emerald)" style={{ margin: '0 auto 0.5rem auto' }} />
                   <p style={{ fontWeight: 600 }}>All inventory items are above reorder levels.</p>
                 </div>
               ) : (
@@ -277,21 +278,21 @@ export default function StaffConsole({ onOpenReceipt, onNavigate }) {
                         alignItems: 'center',
                         padding: '0.75rem 1rem',
                         borderRadius: 'var(--radius-md)',
-                        background: '#fff1f2',
-                        border: '1px solid #fecaca'
+                        background: 'rgba(229, 9, 20, 0.08)',
+                        border: '1px solid rgba(229, 9, 20, 0.25)'
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                        <AlertTriangle size={18} color="#ef4444" />
+                        <AlertTriangle size={18} color="var(--red-primary)" />
                         <div>
-                          <div style={{ fontWeight: 600, fontSize: '0.875rem' }}>{item.item_name}</div>
-                          <div style={{ fontSize: '0.6875rem', color: '#dc2626' }}>
+                          <div style={{ fontWeight: 600, fontSize: '0.875rem', color: 'var(--text-main)' }}>{item.item_name}</div>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                             Category: {item.category} • Reorder threshold: {item.reorder_level}
                           </div>
                         </div>
                       </div>
                       <div style={{ textAlign: 'right' }}>
-                        <span style={{ fontWeight: 700, fontSize: '1rem', color: '#dc2626' }}>
+                        <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#ff4d4f' }}>
                           {item.quantity_in_stock} left
                         </span>
                       </div>

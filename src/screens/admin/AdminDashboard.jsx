@@ -98,7 +98,7 @@ export default function AdminDashboard({ onNavigate }) {
             <span>Total Revenue</span>
             <DollarSign size={18} color="#2E7D32" />
           </div>
-          <div className="card-value" style={{ color: '#2E7D32' }}>
+          <div className="card-value" style={{ color: 'var(--accent-emerald)' }}>
             ₹{totalRev.toFixed(2)}
           </div>
           <div className="card-hint">
@@ -142,15 +142,15 @@ export default function AdminDashboard({ onNavigate }) {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            backgroundColor: '#FFF5F5'
+            backgroundColor: 'var(--bg-elevated)'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-              <CalendarCheck size={18} color="#C62828" />
+              <CalendarCheck size={18} color="var(--red-primary)" />
               <div>
-                <h2 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#C62828' }}>
+                <h2 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-main)' }}>
                   Live Customer Bookings
                 </h2>
-                <div style={{ fontSize: '0.75rem', color: '#666666' }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
                   Real-time station reservations booked by customers
                 </div>
               </div>
@@ -176,7 +176,7 @@ export default function AdminDashboard({ onNavigate }) {
                         padding: '0.85rem 1rem',
                         borderRadius: 'var(--radius-md)',
                         border: '1px solid var(--border-subtle)',
-                        background: '#FFFFFF',
+                        background: 'var(--bg-elevated)',
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
@@ -224,15 +224,15 @@ export default function AdminDashboard({ onNavigate }) {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            backgroundColor: '#FFF5F5'
+            backgroundColor: 'var(--bg-elevated)'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-              <Coffee size={18} color="#C62828" />
+              <Coffee size={18} color="var(--red-primary)" />
               <div>
-                <h2 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#C62828' }}>
+                <h2 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-main)' }}>
                   Active Sessions & Food Demands
                 </h2>
-                <div style={{ fontSize: '0.75rem', color: '#666666' }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
                   Live station player sessions & ordered refreshments
                 </div>
               </div>
@@ -259,7 +259,7 @@ export default function AdminDashboard({ onNavigate }) {
                         padding: '1rem',
                         borderRadius: 'var(--radius-md)',
                         border: '1px solid var(--border-subtle)',
-                        background: '#FFFFFF'
+                        background: 'var(--bg-elevated)'
                       }}
                     >
                       {/* Session Header */}
@@ -269,13 +269,13 @@ export default function AdminDashboard({ onNavigate }) {
                             <span className="badge badge-occupied" style={{ fontSize: '0.7rem' }}>
                               Station {ses.station_id}
                             </span>
-                            <strong style={{ fontSize: '0.9rem' }}>{ses.customer_name}</strong>
+                            <strong style={{ fontSize: '0.9rem', color: 'var(--text-main)' }}>{ses.customer_name}</strong>
                           </div>
                           <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
                             Session ID: {ses.session_id} • Started: {new Date(ses.start_time).toLocaleTimeString()}
                           </div>
                         </div>
-                        <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#C62828' }}>
+                        <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--red-primary)' }}>
                           ₹{Number(ses.session_charge).toFixed(2)}/hr
                         </span>
                       </div>
@@ -284,12 +284,12 @@ export default function AdminDashboard({ onNavigate }) {
                       <div style={{
                         marginTop: '0.65rem',
                         padding: '0.65rem 0.85rem',
-                        background: '#FAFAFA',
+                        background: 'var(--bg-card)',
                         borderRadius: 'var(--radius-md)',
-                        border: '1px solid #E8E8E8'
+                        border: '1px solid var(--border-subtle)'
                       }}>
-                        <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#666666', textTransform: 'uppercase', marginBottom: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                          <ShoppingBag size={12} color="#C62828" />
+                        <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', marginBottom: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                          <ShoppingBag size={12} color="var(--red-primary)" />
                           <span>Player Food Demands ({sessionFoodDemands.length})</span>
                         </div>
 
@@ -311,12 +311,12 @@ export default function AdminDashboard({ onNavigate }) {
                                     fontSize: '0.78rem',
                                     padding: '0.35rem 0.5rem',
                                     borderRadius: '4px',
-                                    background: '#FFFFFF',
-                                    border: '1px solid #E8E8E8'
+                                    background: 'var(--bg-elevated)',
+                                    border: '1px solid var(--border-subtle)'
                                   }}
                                 >
                                   <div>
-                                    <strong>{fd.quantity}x {fd.item_name}</strong>
+                                    <strong style={{ color: 'var(--text-main)' }}>{fd.quantity}x {fd.item_name}</strong>
                                     <span style={{ color: 'var(--text-muted)', marginLeft: '0.35rem' }}>
                                       (₹{Number(fd.amount).toFixed(2)})
                                     </span>

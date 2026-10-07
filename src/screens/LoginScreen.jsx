@@ -184,7 +184,7 @@ export default function LoginScreen({ onLoginSuccess, onBackToLanding }) {
             marginTop: '0.75rem',
             boxShadow: 'var(--shadow-sm)'
           }}>
-            <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#2E7D32', display: 'inline-block' }} />
+            <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#10b981', display: 'inline-block' }} />
             <span>Select Your Assigned Portal Below • Session is Locked Until Sign Out</span>
           </div>
         </div>
@@ -271,9 +271,9 @@ export default function LoginScreen({ onLoginSuccess, onBackToLanding }) {
               borderRadius: 'var(--radius-md)',
               fontSize: '0.8125rem',
               marginBottom: '1.25rem',
-              background: '#FFF5F5',
-              border: '1px solid #FFCDD2',
-              color: '#C62828'
+              background: 'rgba(229, 9, 20, 0.12)',
+              border: '1px solid rgba(229, 9, 20, 0.35)',
+              color: '#ff4d4f'
             }}>
               <ShieldAlert size={16} />
               <span>{errorMsg}</span>

@@ -68,9 +68,9 @@ export default function CustomerSessions() {
           fontSize: '0.875rem',
           fontWeight: 600,
           marginBottom: '1.5rem',
-          background: feedback.type === 'success' ? '#E8F5E9' : '#FFEBEE',
-          border: `1px solid ${feedback.type === 'success' ? '#C8E6C9' : '#FFCDD2'}`,
-          color: feedback.type === 'success' ? '#2E7D32' : '#C62828'
+          background: feedback.type === 'success' ? 'rgba(16, 185, 129, 0.12)' : 'rgba(229, 9, 20, 0.12)',
+          border: `1px solid ${feedback.type === 'success' ? 'rgba(16, 185, 129, 0.35)' : 'rgba(229, 9, 20, 0.35)'}`,
+          color: feedback.type === 'success' ? '#10b981' : '#ff4d4f'
         }}>
           {feedback.type === 'success' ? <CheckCircle2 size={18} /> : <AlertCircle size={18} />}
           <span>{feedback.message}</span>
@@ -82,7 +82,7 @@ export default function CustomerSessions() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '2rem' }}>
           
           {/* Active Session Status Card */}
-          <div className="card" style={{ borderTop: '4px solid #C62828', background: '#FFFFFF' }}>
+          <div className="card" style={{ borderTop: '4px solid var(--red-primary)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.5rem' }}>
@@ -101,7 +101,7 @@ export default function CustomerSessions() {
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>
                   Estimated Session Charge
                 </div>
-                <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#C62828' }}>
+                <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--red-primary)' }}>
                   ₹{Number(activeSession.session_charge).toFixed(2)}
                 </div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
@@ -119,12 +119,12 @@ export default function CustomerSessions() {
                   width: 34,
                   height: 34,
                   borderRadius: '8px',
-                  background: '#FFF5F5',
-                  border: '1px solid #FFCDD2',
+                  background: 'rgba(229, 9, 20, 0.12)',
+                  border: '1px solid rgba(229, 9, 20, 0.35)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#C62828'
+                  color: 'var(--red-primary)'
                 }}>
                   <Coffee size={18} />
                 </div>
@@ -152,8 +152,8 @@ export default function CustomerSessions() {
                   <div
                     key={item.item_id}
                     style={{
-                      background: '#FAFAFA',
-                      border: '1px solid #E8E8E8',
+                      background: 'var(--bg-elevated)',
+                      border: '1px solid var(--border-subtle)',
                       borderRadius: 'var(--radius-md)',
                       padding: '1rem',
                       display: 'flex',
@@ -165,11 +165,11 @@ export default function CustomerSessions() {
                     <div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                         <strong style={{ fontSize: '0.9rem', color: 'var(--text-main)' }}>{item.item_name}</strong>
-                        <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#C62828' }}>
+                        <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--red-primary)' }}>
                           ₹{Number(item.unit_price).toFixed(2)}
                         </span>
                       </div>
-                      <div style={{ fontSize: '0.725rem', color: inStock ? '#2E7D32' : '#C62828', marginTop: '0.25rem' }}>
+                      <div style={{ fontSize: '0.725rem', color: inStock ? 'var(--accent-emerald)' : 'var(--red-primary)', marginTop: '0.25rem' }}>
                         {inStock ? `${item.quantity_in_stock} in kitchen stock` : 'Out of stock'}
                       </div>
                     </div>
@@ -196,7 +196,7 @@ export default function CustomerSessions() {
               paddingTop: '1rem'
             }}>
               <h4 style={{ fontSize: '0.875rem', fontWeight: 800, marginBottom: '0.65rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <ShoppingBag size={14} color="#C62828" />
+                <ShoppingBag size={14} color="var(--red-primary)" />
                 <span>My Active Session Food Demands ({activeSessionDemands.length})</span>
               </h4>
 
@@ -217,12 +217,12 @@ export default function CustomerSessions() {
                           alignItems: 'center',
                           padding: '0.65rem 0.85rem',
                           borderRadius: 'var(--radius-sm)',
-                          background: '#FFFFFF',
-                          border: '1px solid #E8E8E8'
+                          background: 'var(--bg-elevated)',
+                          border: '1px solid var(--border-subtle)'
                         }}
                       >
                         <div>
-                          <strong>{demand.quantity}x {demand.item_name}</strong>
+                          <strong style={{ color: 'var(--text-main)' }}>{demand.quantity}x {demand.item_name}</strong>
                           <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginLeft: '0.5rem' }}>
                             (₹{Number(demand.amount).toFixed(2)}) • {new Date(demand.timestamp).toLocaleTimeString()}
                           </span>
@@ -240,7 +240,7 @@ export default function CustomerSessions() {
           </div>
         </div>
       ) : (
-        <div className="card" style={{ marginBottom: '1.75rem', background: '#FAFAFA' }}>
+        <div className="card" style={{ marginBottom: '1.75rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <Clock size={20} color="var(--text-muted)" />
             <div style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
@@ -280,7 +280,7 @@ export default function CustomerSessions() {
                   <td>{new Date(ses.start_time).toLocaleString()}</td>
                   <td>{ses.end_time ? new Date(ses.end_time).toLocaleString() : 'In Progress'}</td>
                   <td>{ses.duration}</td>
-                  <td style={{ fontWeight: 700, color: '#2E7D32' }}>
+                  <td style={{ fontWeight: 700, color: 'var(--accent-emerald)' }}>
                     ₹{Number(ses.session_charge).toFixed(2)}
                   </td>
                   <td>

@@ -17,10 +17,10 @@ export default function Navbar({ onLogout }) {
     : 'ADMINISTRATOR PORTAL';
 
   const portalBadgeColor = isCustomer
-    ? { bg: '#FFF5F5', border: '#FFCDD2', text: '#C62828' }
+    ? { bg: 'rgba(229, 9, 20, 0.12)', border: 'rgba(229, 9, 20, 0.35)', text: '#ff4d4f' }
     : isStaff
-    ? { bg: '#FDECEC', border: '#EF9A9A', text: '#B71C1C' }
-    : { bg: '#FFF5F5', border: '#E57373', text: '#C62828' };
+    ? { bg: 'rgba(229, 9, 20, 0.12)', border: 'rgba(229, 9, 20, 0.35)', text: '#ff4d4f' }
+    : { bg: 'rgba(229, 9, 20, 0.12)', border: 'rgba(229, 9, 20, 0.35)', text: '#ff4d4f' };
 
   return (
     <header className="top-header" style={{
@@ -60,12 +60,12 @@ export default function Navbar({ onLogout }) {
               width: 32,
               height: 32,
               borderRadius: '50%',
-              backgroundColor: '#FDECEC',
-              border: '1px solid #FFCDD2',
+              backgroundColor: 'rgba(229, 9, 20, 0.12)',
+              border: '1px solid rgba(229, 9, 20, 0.35)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#C62828'
+              color: '#ff4d4f'
             }}
           >
             <User size={16} />
@@ -84,9 +84,9 @@ export default function Navbar({ onLogout }) {
           className="btn btn-secondary btn-sm"
           onClick={onLogout}
           style={{
-            borderColor: '#FFCDD2',
-            color: '#C62828',
-            background: '#FFF5F5',
+            borderColor: 'rgba(229, 9, 20, 0.35)',
+            color: '#ff4d4f',
+            background: 'rgba(229, 9, 20, 0.1)',
             fontWeight: 700
           }}
           title="Sign out of GameVerse"
